@@ -1,0 +1,154 @@
+/* source: https://www.w3schools.com/howto/howto_css_center_button.asp */
+/* https://tailwindcss.com/docs/background-color */
+/* https://www.w3schools.com/w3css/w3css_tabulators.asp */
+/* https://www.w3schools.com/howto/howto_js_tab_header.asp */
+/* https://www.geeksforgeeks.org/html-login-form/ */
+/* https://www.w3schools.com/howto/howto_css_signup_form.asp */
+/* https://www.w3schools.com/howto/howto_css_login_form.asp */
+/* https://www.w3schools.com/cssref/sel_placeholder.php */
+/* https://www.w3schools.com/tags/tag_button.asp */
+/* https://uiverse.io/buttons */
+
+body {
+  font-family: 'Telegraf', sans-serif;
+  background-color: #0f172a; /* slate-900 */
+  display: flex; /* flexbox to center things*/
+  justify-content: center;
+  align-items: center;
+  height: 900px;
+}
+
+/* login button */
+#loginBtn {
+  background-color: #2563eb; /* blue-600 */
+  color: white; /* white text font*/
+  border: none;
+  padding: 12px 24px; /* size inside button */
+  border-radius: 6px; /* round the button corners */
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* change button color when hover */
+.form button:hover, #loginBtn:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+/* modal box w3schools */
+.modal {
+  position: fixed;                  
+  top: 0;                           /* set it to top of viewport */
+  left: 0;                          /* set it to left of viewport */
+  width: 100%;                      /* full width of viewport */
+  height: 100%;                     /* full height of viewport */
+  display: flex;                    /* use flexbox */
+  justify-content: center;          
+  align-items: center;              
+  z-index: 1000;                    /* places modal above other content */
+}
+
+/* use to hide element */
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #1e293b; /* slate-800 */
+  border-radius: 12px; /* round the corners */
+  width: 90%;
+  max-width: 440px;
+  padding: 24px;
+  position: relative;
+  border: 1px solid #334155; /* slate-700 */
+}
+
+/* close button */
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 24px;
+  color: #94a3b8; /* slate-400 */
+  cursor: pointer;
+}
+
+/* change button color when hover */
+.close:hover {
+  color: #f1f5f9; /* slate-100 */
+}
+
+/* login & signup tab */
+.tabs {
+  display: flex;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #334155; /* slate-700 */
+}
+
+/* styles for the tab button */
+.tab {
+  background: transparent;
+  border: none;
+  color: #94a3b8; /* slate-400 */
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* active tab */
+.tab.active {
+  color: #38bdf8; /* sky-400 */
+  border-bottom: 2px solid #38bdf8; /* blue line under active tab */
+}
+
+/* Changes tab color on hover (except for active tab) */
+.tab:hover:not(.active) {
+  color: #cbd5e1; /* slate-300 */
+}
+
+.form {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form.active {
+  display: flex;
+}
+
+.form input {
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid #334155; /* slate-700 */
+  background-color: #0f172a; /* slate-900 */
+  color: white;
+  font-size: 16px;
+  transition: border-color 0.2s ease; /* smooth border color change */
+}
+
+.form input:focus {
+  outline: none;
+  border-color: #38bdf8; /* blue border on focus */
+  box-shadow: 0 0 0 1px #38bdf8; /* add blue glow on focus */
+}
+
+/* placeholder text */
+.form input::placeholder {
+  color: #64748b; /* slate-500 */
+}
+
+/* form buttons */
+.form button {
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.2s ease; /* smooth color change */
+  margin-top: 8px;
+  cursor: pointer;
+}
