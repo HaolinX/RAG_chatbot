@@ -9,14 +9,7 @@
 /* https://www.w3schools.com/tags/tag_button.asp */
 /* https://uiverse.io/buttons */
 
-body {
-  font-family: 'Telegraf', sans-serif;
-  background-color: #0f172a; /* slate-900 */
-  display: flex; /* flexbox to center things*/
-  justify-content: center;
-  align-items: center;
-  height: 900px;
-}
+
 
 /* login button */
 #loginBtn {
@@ -24,9 +17,12 @@ body {
   color: white; /* white text font*/
   border: none;
   padding: 12px 24px; /* size inside button */
-  border-radius: 6px; /* round the button corners */
-  font-size: 16px;
+  border-radius: 20px; /* round the button corners */
+  font-size: 32px; /* font size */
   cursor: pointer;
+  height: 5rem; /* height of button */
+  width: 50%; /* full width of button */
+  
 }
 
 /* change button color when hover */
@@ -41,6 +37,8 @@ body {
   left: 0;                          /* set it to left of viewport */
   width: 100%;                      /* full width of viewport */
   height: 100%;                     /* full height of viewport */
+  background: rgba(0, 0, 0, 0.1);   /* background with opacity */
+  backdrop-filter: blur(5px); /* optional blur */
   display: flex;                    /* use flexbox */
   justify-content: center;          
   align-items: center;              
@@ -82,6 +80,7 @@ body {
   display: flex;
   margin-bottom: 24px;
   border-bottom: 1px solid #334155; /* slate-700 */
+
 }
 
 /* styles for the tab button */

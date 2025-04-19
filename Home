@@ -1,0 +1,213 @@
+<!-- source: https://www.w3schools.com/howto/howto_css_modals.asp -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RAGBot</title>
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+
+        <!-- AOS CSS for animation -->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+
+        <!-- Jayden's AuthModal -->       
+        <link rel="stylesheet" href="AuthModal.css">
+
+        <style>
+            @font-face {
+                font-family: 'Telegraf';
+                font-style: normal;
+                font-weight: normal;
+                src: url('fonts/PPTelegraf-Regular.otf') format('opentype');
+                
+            }  
+            body {
+                margin: 0;
+                font-family: 'Telegraf', sans-serif;
+                background-color: #0f172a;
+                color: #ffffff;
+                scroll-behavior: smooth;
+            }
+
+            header {
+                text-align: center;
+                padding: 60px 20px;
+            }
+
+            header img {
+                width: 100%;
+                max-height: 500px;
+                object-fit: cover;
+            }
+
+            section {
+                padding: 50px 20px;
+                max-width: 800px;
+                margin: auto;
+                
+            }
+
+            h1, h2 {
+                margin-bottom: 20px;
+                color: #ffffff;
+            }
+
+            p {
+                color: #cccccc;
+                font-size: 1.1rem;
+            }
+
+            
+            .spacer {
+                height: 5px;
+            }
+
+            .login {
+                display: flex;
+                justify-content: center;
+                align-items: start;
+            }
+
+            .ChatBot{
+                display: flex;
+                justify-content: center;
+                align-items: start;
+            }
+
+            .ChatBot a {
+                background-color: #2563eb; /* blue-600 */
+                color: white; /* white text font */
+                border: none;
+                padding: 12px 24px; /* size inside button */
+                border-radius: 20px; /* round the button corners */
+                font-size: 16px; /* font size */
+                cursor: pointer;
+                height: 5rem; /* height of button */
+                width: 50%; /* full width of button */
+            }
+
+            .about {
+                background-color: #25303e;
+                padding: 10px;
+                border-radius: 8px;;
+            }
+
+            .faq a {
+                background-color: #2563eb; /* blue-600 */
+                color: white; /* white text font */
+                border: none;
+                padding: 12px 24px; /* size inside button */
+                border-radius: 20px; /* round the button corners */
+                font-size: 16px; /* font size */
+                cursor: pointer;
+                height: 5rem; /* height of button */
+                width: 50%; /* full width of button */
+            }
+
+
+            .support {
+                padding: 10px;
+                border-radius: 8px;;
+            }
+
+            .support a {
+                background-color: #2563eb; /* blue-600 */
+                color: white; /* white text font */
+                border: none;
+                padding: 12px 24px; /* size inside button */
+                border-radius: 20px; /* round the button corners */
+                font-size: 16px; /* font size */
+                cursor: pointer;
+                height: 5rem; /* height of button */
+                width: 50%; /* full width of button */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header with illustration -->
+        <header>
+            <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" />
+        </header>
+
+        <!-- Login/Registration Section -->
+        <section class="login" data-aos="fade-up">
+            <button id="loginBtn">Login / Register</button>
+        </section>
+
+        <div id="authModal" class="modal hidden">
+            <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <!-- Tab buttons -->
+            <div class="tabs">
+                <button class="tab active" data-target="loginForm">Login</button>
+                <button class="tab" data-target="registerForm">Register</button>
+            </div>
+
+            <!-- Login form -->
+            <form id="loginForm" class="form active">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+
+            <!-- Signup form -->
+            <form id="registerForm" class="form">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+            </div>
+        </div>
+
+        <div class="spacer"></div>  
+
+        <section class="ChatBot" data-aos="fade-up">
+        <li><a href="ChatBot">PROTOTYPE</a></li>
+        </section>
+
+        <div class="spacer"></div>
+
+        <!-- About Section -->
+        <section class="about" data-aos="zoom-in">
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt, dui quis finibus tempor, augue tortor aliquam lectus, ac lobortis ante libero in ex. Donec eu blandit nisl. Maecenas posuere, elit in tristique volutpat, ipsum nunc cursus lorem, a malesuada augue elit non metus. Donec placerat, enim vel pharetra viverra, odio risus eleifend augue, ac mattis lacus metus ut nisi. Suspendisse feugiat, leo ac lobortis aliquam, nisi neque aliquam metus, non facilisis urna tortor id leo. Suspendisse id dapibus nisl, sed placerat ipsum. Vivamus et pellentesque libero. Pellentesque congue bibendum libero fermentum tincidunt. Morbi tempor odio sit amet suscipit vestibulum. Cras non magna vel leo elementum sollicitudin nec eu urna.</p>
+        </section>
+
+        <div class="spacer"></div>
+
+        <!-- FAQ Section -->
+        <section class="faq" data-aos="fade-up">
+            <h2>Frequently Asked Questions</h2>
+            <li><a href="FAQ">Frequently Asked Questions</a></li>
+        </section>
+
+        <div class="spacer"></div>
+
+        <!-- Support Section -->
+        <section class="support" data-aos="fade-up">
+            <h2>Need Help?</h2>
+            <p>If you have any questions or need assistance, please contact our support team.</p>
+            <li><a href="support_form">Contact Support</a></li>
+
+        <div class="spacer"></div>
+
+        <!-- AOS JS -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                duration: 1000, // Animation duration in ms
+                once: false // Animation happens only once as you scroll
+            });
+        </script>
+
+        <!-- links to the javascript file -->
+        <script src="AuthModal.js"></script>
+    </body>
+</html>
