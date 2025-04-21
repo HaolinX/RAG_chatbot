@@ -13,130 +13,25 @@
         <!-- AOS CSS for animation -->
         <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
-
         <!-- Jayden's AuthModal -->       
-        <link rel="stylesheet" href="AuthModal.css">
+        <link rel="stylesheet" href="auth-modal.css">
 
-        <style>
-            @font-face {
-                font-family: 'Telegraf';
-                font-style: normal;
-                font-weight: normal;
-                src: url('fonts/PPTelegraf-Regular.otf') format('opentype');
-                
-            }  
-            body {
-                margin: 0;
-                font-family: 'Telegraf', sans-serif;
-                background-color: #0f172a;
-                color: #ffffff;
-                scroll-behavior: smooth;
-            }
+        <!-- style sheet for home page -->
+        <link rel="stylesheet" href="home.css">
 
-            header {
-                text-align: center;
-                padding: 60px 20px;
-            }
-
-            header img {
-                width: 100%;
-                max-height: 500px;
-                object-fit: cover;
-            }
-
-            section {
-                padding: 50px 20px;
-                max-width: 800px;
-                margin: auto;
-                
-            }
-
-            h1, h2 {
-                margin-bottom: 20px;
-                color: #ffffff;
-            }
-
-            p {
-                color: #cccccc;
-                font-size: 1.1rem;
-            }
-
-            
-            .spacer {
-                height: 5px;
-            }
-
-            .login {
-                display: flex;
-                justify-content: center;
-                align-items: start;
-            }
-
-            .ChatBot{
-                display: flex;
-                justify-content: center;
-                align-items: start;
-            }
-
-            .ChatBot a {
-                background-color: #2563eb; /* blue-600 */
-                color: white; /* white text font */
-                border: none;
-                padding: 12px 24px; /* size inside button */
-                border-radius: 20px; /* round the button corners */
-                font-size: 16px; /* font size */
-                cursor: pointer;
-                height: 5rem; /* height of button */
-                width: 50%; /* full width of button */
-            }
-
-            .about {
-                background-color: #25303e;
-                padding: 10px;
-                border-radius: 8px;;
-            }
-
-            .faq a {
-                background-color: #2563eb; /* blue-600 */
-                color: white; /* white text font */
-                border: none;
-                padding: 12px 24px; /* size inside button */
-                border-radius: 20px; /* round the button corners */
-                font-size: 16px; /* font size */
-                cursor: pointer;
-                height: 5rem; /* height of button */
-                width: 50%; /* full width of button */
-            }
-
-
-            .support {
-                padding: 10px;
-                border-radius: 8px;;
-            }
-
-            .support a {
-                background-color: #2563eb; /* blue-600 */
-                color: white; /* white text font */
-                border: none;
-                padding: 12px 24px; /* size inside button */
-                border-radius: 20px; /* round the button corners */
-                font-size: 16px; /* font size */
-                cursor: pointer;
-                height: 5rem; /* height of button */
-                width: 50%; /* full width of button */
-            }
-        </style>
     </head>
     <body>
         <!-- Header with illustration -->
         <header>
+            <!-- Logo in top left -->
+            <div class="logo">RAGBot</div>
+
+            <!-- Login/Registration Section -->
+            <button id="loginBtn">Login / Register</button>
+
             <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" />
         </header>
 
-        <!-- Login/Registration Section -->
-        <section class="login" data-aos="fade-up">
-            <button id="loginBtn">Login / Register</button>
-        </section>
 
         <div id="authModal" class="modal hidden">
             <div class="modal-content">
@@ -169,7 +64,7 @@
         <div class="spacer"></div>  
 
         <section class="ChatBot" data-aos="fade-up">
-        <li><a href="ChatBot">PROTOTYPE</a></li>
+            <li><a href="chat-bot.html">PROTOTYPE</a></li>
         </section>
 
         <div class="spacer"></div>
@@ -185,7 +80,7 @@
         <!-- FAQ Section -->
         <section class="faq" data-aos="fade-up">
             <h2>Frequently Asked Questions</h2>
-            <li><a href="FAQ">Frequently Asked Questions</a></li>
+            <li><a href="faq.html">Frequently Asked Questions</a></li>
         </section>
 
         <div class="spacer"></div>
@@ -194,7 +89,7 @@
         <section class="support" data-aos="fade-up">
             <h2>Need Help?</h2>
             <p>If you have any questions or need assistance, please contact our support team.</p>
-            <li><a href="support_form">Contact Support</a></li>
+            <li><a href="support-form.html">Contact Support</a></li>
 
         <div class="spacer"></div>
 
@@ -208,6 +103,6 @@
         </script>
 
         <!-- links to the javascript file -->
-        <script src="AuthModal.js"></script>
+        <script src="auth-modal.js"></script>
     </body>
 </html>
