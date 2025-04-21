@@ -12,21 +12,22 @@
 
 /* login button */
 #loginBtn {
-  background-color: #2563eb; /* blue-600 */
+  background-color: #1d4ed8; /* blue-700 */
   color: white; /* white text font*/
   border: none;
-  padding: 12px 24px; /* size inside button */
-  border-radius: 20px; /* round the button corners */
-  font-size: 32px; /* font size */
+  padding: 6px 12px; /* size inside button */
+  border-radius: 15px; /* round the button corners */
+  font-size: 16px; /* font size */
   cursor: pointer;
-  height: 5rem; /* height of button */
-  width: 50%; /* full width of button */
-  
+  height: 35px; /* height of button */
+  position: absolute; /* position in top right */
+  top: 20px;
+  right: 20px;
 }
 
 /* change button color when hover */
 .form button:hover, #loginBtn:hover {
-  background-color: #1d4ed8; /* blue-700 */
+  background-color: #1e40af; /* blue-800 */
 }
 
 /* modal box w3schools */
@@ -139,7 +140,7 @@
 
 /* form buttons */
 .form button {
-  background-color: #2563eb; /* blue-600 */
+  background-color: #1d4ed8; /* blue-700 */
   color: white;
   border: none;
   padding: 12px;
