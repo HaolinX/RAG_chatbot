@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is a GROUP assignment.  Get the starting repository here.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSC317-S25/group-project-kunjcr2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CSC317-S25/group-project-kunjcr2/issues"
+  },
+  "homepage": "https://github.com/CSC317-S25/group-project-kunjcr2#readme"
+}
