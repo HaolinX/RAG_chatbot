@@ -4,34 +4,26 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
-// REMOVED: const { pipeline } = require('@xenova/transformers'); // Cannot require ESM
+// Using dynamic import for transformers
 
 // --- LangChain Imports ---
 const { FaissStore } = require("@langchain/community/vectorstores/faiss");
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const { PromptTemplate } = require("@langchain/core/prompts");
 const { loadQAStuffChain } = require("langchain/chains");
-const { ChatOpenAI } = require("@langchain/openai");
 const { Embeddings } = require("@langchain/core/embeddings");
-const { OpenAI: OpenAIDirectClient } = require('openai');
 
 // --- App Setup ---
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
-// --- OpenAI Clients ---
-const llm = new ChatOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  modelName: "gpt-4o-mini",
-});
-const openaiDirect = new OpenAIDirectClient({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const cors = require('cors');
+app.use(cors());
 
 // --- Middleware ---
-app.use(express.json({ limit: '50mb' }));
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // --- File Upload Setup ---
 const storage = multer.diskStorage({
@@ -58,10 +50,10 @@ const upload = multer({
 if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 if (!fs.existsSync('vectorstore')) fs.mkdirSync('vectorstore');
 
-// --- Custom Transformer Embeddings ---
-// Variable to hold the dynamically imported pipeline function
+// --- Pipeline Instance for all transformer models ---
 let pipelineInstance = null;
 
+// --- Custom Transformer Embeddings ---
 class TransformerEmbeddings extends Embeddings {
   constructor(modelName = 'Xenova/all-MiniLM-L6-v2') {
     super({});
@@ -72,20 +64,20 @@ class TransformerEmbeddings extends Embeddings {
   async init() {
     if (!this.embeddingPipeline) {
       console.log(`Loading embedding model: ${this.modelName}...`);
-      // Dynamically import pipeline ONCE if needed
+
       if (!pipelineInstance) {
         const transformers = await import('@xenova/transformers');
         pipelineInstance = transformers.pipeline;
         console.log('Transformer pipeline function loaded.');
       }
-      // Use the loaded pipeline function
+
       this.embeddingPipeline = await pipelineInstance('feature-extraction', this.modelName);
       console.log('Embedding model loaded successfully!');
     }
     return this;
   }
 
-  async _embed(texts) {
+  async embed(texts) {
     await this.init();
     const embeddings = [];
     for (const text of texts) {
@@ -96,7 +88,7 @@ class TransformerEmbeddings extends Embeddings {
   }
 
   embedDocuments(texts) {
-    return this._embed(texts);
+    return this.embed(texts);
   }
 
   async embedQuery(text) {
@@ -106,6 +98,63 @@ class TransformerEmbeddings extends Embeddings {
   }
 }
 const embeddings = new TransformerEmbeddings();
+
+// --- Hugging Face QA Model Class ---
+class HuggingFaceQA {
+  constructor(modelName = 'Xenova/distilbert-base-cased-distilled-squad') {
+    this.modelName = modelName;
+    this.qaModel = null;
+  }
+
+  async init() {
+    if (!this.qaModel) {
+      console.log(`Loading QA model: ${this.modelName}...`);
+
+      if (!pipelineInstance) {
+        const transformers = await import('@xenova/transformers');
+        pipelineInstance = transformers.pipeline;
+        console.log('Transformer pipeline function loaded.');
+      }
+
+      this.qaModel = await pipelineInstance('question-answering', this.modelName);
+      console.log('QA model loaded successfully!');
+    }
+    return this;
+  }
+
+  async getAnswer(question, context) {
+    await this.init();
+    try {
+      // Ensure both question and context are strings
+      if (typeof question !== 'string' || typeof context !== 'string') {
+        console.error('Invalid input types:', { 
+          questionType: typeof question, 
+          contextType: typeof context 
+        });
+        throw new Error('Question and context must be strings');
+      }
+      const truncatedContext = context.substring(0, 1500);
+      
+      console.log('Submitting question to QA model:', question.substring(0, 100));
+      console.log('Context length:', truncatedContext.length);
+
+      const result = await this.qaModel(String(question), String(truncatedContext))
+      
+      return {
+        answer: result.answer || "Unable to extract an answer from the context.",
+        score: result.score,
+        start: result.start,
+        end: result.end
+      };
+    } catch (error) {
+      console.error('Error in QA model:', error);
+      throw new Error('Failed to get answer from QA model');
+    }
+  }
+}
+
+// Initialize QA model
+const qaModel = new HuggingFaceQA();
 
 // --- Routes ---
 
@@ -168,7 +217,7 @@ async function processPDF(req, res) {
   }
 }
 
-// --- Q&A Endpoint ---
+// --- Q&A Endpoint with Hugging Face model ---
 app.post('/ask', async (req, res) => {
   try {
     const { question, filename } = req.body;
@@ -176,37 +225,43 @@ app.post('/ask', async (req, res) => {
 
     const vectorStorePath = `vectorstore/${path.basename(filename, '.pdf')}`;
     if (!fs.existsSync(vectorStorePath)) {
-         return res.status(404).json({ error: `Vector store for ${filename} not found. Please process the PDF first.` });
+      return res.status(404).json({ error: `Vector store for ${filename} not found. Please process the PDF first.` });
     }
 
     console.log(`Loading vector store from: ${vectorStorePath}`);
-    await embeddings.init(); // Ensure model is ready before loading store needing it
+    await embeddings.init();
     const vectorStore = await FaissStore.load(vectorStorePath, embeddings);
 
     console.log('Searching for relevant context...');
-    const relevantDocs = await vectorStore.similaritySearch(question, 4);
+    const relevantDocs = await vectorStore.similaritySearch(question, 3);
     console.log(`Found ${relevantDocs.length} relevant documents`);
 
     if (relevantDocs.length === 0) {
-        return res.json({ answer: "Could not find relevant information in the document to answer that question." });
+      return res.json({ answer: "Could not find relevant information in the document to answer that question." });
     }
 
-    const template = `Answer the question based only on the following context:
-    {context}
-    Question: {question}
-    Answer:`;
-    const prompt = PromptTemplate.fromTemplate(template);
-    const chain = loadQAStuffChain(llm, { prompt: prompt });
+    // Initialize QA model
+    await qaModel.init();
 
-    console.log('Generating answer...');
-    const result = await chain.invoke({
-      input_documents: relevantDocs,
-      question: question,
-    });
+    // Combine relevant docs into one context string
+    // Make sure we're working with strings
+    const context = relevantDocs
+      .map(doc => doc.pageContent ? String(doc.pageContent).trim() : "")
+      .filter(text => text.length > 0)
+      .join("\n\n");
+
+    if (!context || context.length === 0) {
+      return res.json({ answer: "Found documents were empty or contained invalid content." });
+    }
+
+    console.log('Generating answer with Hugging Face QA model...');
+    const result = await qaModel.getAnswer(String(question), String(context));
+    console.log('Answer generated:', result.answer);
 
     console.log('Answer generated');
     res.json({
-      answer: result.output_text
+      answer: result.answer,
+      confidence: result.score
     });
   } catch (error) {
     console.error('Error answering question:', error);
@@ -218,11 +273,11 @@ app.post('/ask', async (req, res) => {
 async function generateBARTSummary(text) {
   try {
     console.log('Initializing BART summarization model...');
-    // Dynamically import pipeline ONCE if needed
+
     if (!pipelineInstance) {
-        const transformers = await import('@xenova/transformers');
-        pipelineInstance = transformers.pipeline;
-        console.log('Transformer pipeline function loaded.');
+      const transformers = await import('@xenova/transformers');
+      pipelineInstance = transformers.pipeline;
+      console.log('Transformer pipeline function loaded.');
     }
     // Use the loaded pipeline function
     const summarizer = await pipelineInstance('summarization', 'Xenova/bart-large-cnn');
@@ -231,25 +286,10 @@ async function generateBARTSummary(text) {
     const truncatedText = text.slice(0, 5000);
 
     console.log('Generating summary with BART...');
-    const result = await summarizer(truncatedText, { max_length: 150, min_length: 30, do_sample: false });
+    const result = await summarizer(truncatedText, { max_length: 300, min_length: 50, do_sample: false });
     return result[0].summary_text;
   } catch (error) {
-    console.error('Error generating BART summary:', error);
-    console.log('Falling back to OpenAI for summary generation...');
-    try {
-      const response = await openaiDirect.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "You are a helpful AI that summarizes academic papers and research documents concisely." },
-          { role: "user", content: `Please summarize the following text:\n\n${text.slice(0, 15000)}` }
-        ],
-        max_tokens: 300
-      });
-      return response.choices[0].message.content + " (Generated by OpenAI fallback)";
-    } catch (fallbackError) {
-      console.error('Fallback summarization also failed:', fallbackError);
-      return 'Unable to generate summary due to processing errors.';
-    }
+    throw new Error('Error generating summary: ' + error.message);
   }
 }
 
@@ -259,11 +299,10 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join('/public', 'index.html'));
 });
 
 // --- Start Server ---
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  // No need to init embeddings here anymore, it happens on demand.
 });

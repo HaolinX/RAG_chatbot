@@ -194,7 +194,7 @@
             fileStatus.textContent = 'Uploading and processing...';
 
             try {
-                const response = await fetch('/upload-base64', {
+                const response = await fetch('http://localhost:3001/upload-base64', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -247,7 +247,7 @@
             answerResult.classList.add('hidden');
 
             try {
-                const response = await fetch('/ask', {
+                const response = await fetch('http://localhost:3001/ask', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -259,10 +259,10 @@
                 });
 
                 const data = await response.json();
-
+                console.log(data);
                 if (response.ok) {
                     qaStatus.classList.add('hidden');
-                    answerResult.textContent = data.answer;
+                    answerResult.textContent = data['answer'];
                     answerResult.classList.remove('hidden');
                 } else {
                     qaStatus.textContent = `Error: ${data.error || 'Failed to process question'}`;
