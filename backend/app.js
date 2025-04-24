@@ -192,7 +192,9 @@ async function processPDF(req, res) {
     const text = pdfData.text;
 
     console.log('Splitting text...');
-    const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
+    const textSplitter = new RecursiveCharacterTextSplitter(
+      { chunkSize: 1000, chunkOverlap: 200 , separator: [".", "\n"] }
+    );
     const docs = await textSplitter.createDocuments([text], [{ source: req.file.filename }]);
 
     console.log('Creating embeddings and vector store...');
@@ -298,9 +300,9 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join('/public', 'index.html'));
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join('/public', 'index.html'));
+// });
 
 // --- Start Server ---
 app.listen(PORT, () => {

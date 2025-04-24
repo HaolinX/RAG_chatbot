@@ -8,7 +8,7 @@ async function runQATest() {
   const question = 'Who designed the Eiffel Tower?';
 
   // Load QA pipeline
-  const qa = await pipeline('question-answering', 'Xenova/distilbert-base-cased-distilled-squad');
+  const qa = await pipeline('question-answering', 'tomasmcm/deepset-roberta-base-squad2-onnx');
 
   try {
     const resultArgs = await qa(String(question), String(context));
