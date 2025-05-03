@@ -54,6 +54,23 @@ body {
     align-self: flex-start;
 }
 
+/* upload pdf button/section */
+.upload-button-container {
+    position: fixed;
+    bottom: 10px; /* set it inside the chat input area */
+    right: 90px; /* set it to the left of the send button */
+    z-index: 11; /* above chat input */
+}
+
+.upload-button-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /* CHAT INPUT AT BOTTOM */
 .chat-input {
     display: flex;
@@ -73,7 +90,7 @@ body {
     border: none;
     outline: none;
     border-radius: 4px;
-    margin-right: 8px;
+    margin-right: 138px;
 }
 
 .chat-input button {
@@ -85,8 +102,8 @@ body {
     cursor: pointer;
 }
 
-.chat-input button:hover {
-    background: #0056b3;
+.upload-button-container button:hover, .chat-input button:hover {
+  background: #0056b3;
 }
 
 /* UPLOAD AREA ABOVE INPUT */
@@ -101,6 +118,22 @@ body {
     background-color: #f8f9fa;
     text-align: center;
     z-index: 9;
+}
+
+/* close button inside of upload pdf area */
+.close-button {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #dc2626; /* color from tailwind */
+    color: white;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
 }
 
 /* SUMMARY + Q&A SECTIONS CENTERED */
