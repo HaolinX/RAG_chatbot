@@ -3,46 +3,61 @@
     font-style: normal;
     font-weight: normal;
     src: url('fonts/PPTelegraf-Regular.otf') format('opentype');
-    
 }
 
 body {
     font-family: 'Telegraf', sans-serif;
     background-color: #0f172a; /* slate-900 */
-    display: flex;
-    justify-content: center;
-    height: 900px;
     color: white;
     margin: 0;
+    scroll-behavior: smooth;
+}
+
+/* header styles */
+header {
+    position: relative;
+    background-color: #1d2331;
+    padding: 30px;
+    text-align: center;
 }
 
 .logo {
     font-size: 32px;
     position: absolute;
-    top: 15px;
+    top: 20px;
     left: 20px;
     font-weight: bold;
     list-style-type: none;
-    
 }
 
-/* content container */
+/* navigation */
+nav {
+    display: inline-block; /* centers nav within header */
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 20px;
+    font-size: 18px;
+}
+
+/* main content container */
 .container {
     width: 90%;
     max-width: 800px;
+    margin: 0 auto;
 }
 
+/* page heading */
 h1 {
     color: #38bdf8; /* sky-400 */
-    margin: 0;              /* remove default margin */
-    padding: 0;             /* remove default padding */
-    margin-bottom: 32px;
+    margin: 30px 0 32px;
     text-align: center;
-    /* font-size: 60px;         make the heading font big */
-    margin-top: 80px;
 }
 
-/* form elements styling */
+/* form styling */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -50,37 +65,33 @@ h1 {
     margin-bottom: 16px;
 }
 
-/* dark input fields with light text */
 .form-group input,
 .form-group select,
 .form-group textarea {
     padding: 12px 16px;
     border-radius: 6px;
-    border: 1px solid #334155; /* slate-700 */
-    background-color: #0f172a; /* slate-900 */
+    border: 1px solid #334155;
+    background-color: #0f172a;
     color: white;
     font-size: 16px;
-    transition: border-color 0.2s ease;
     font-family: 'Telegraf', sans-serif;
+    transition: border-color 0.2s ease;
 }
 
-/* blue highlight when input is focused */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #38bdf8; /* blue border on focus */
-    box-shadow: 0 0 0 1px #38bdf8; /* add blue glow on focus */
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 1px #38bdf8;
 }
 
-/* grey placeholder text */
 .form-group input::placeholder,
 .form-group select::placeholder,
 .form-group textarea::placeholder {
-    color: #64748b; /* slate-500 */
+    color: #64748b;
 }
 
-/* resize text area for messages */
 .form-group textarea {
     min-height: 150px;
     resize: vertical;
@@ -88,7 +99,7 @@ h1 {
 
 /* buttons */
 button {
-    background-color: #2563eb; /* blue-600 */
+    background-color: #2563eb;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -99,20 +110,30 @@ button {
     cursor: pointer;
 }
 
-/* darker blue on hover */
 button:hover {
-    background-color: #1d4ed8; /* blue-700 */
+    background-color: #1d4ed8;
 }
 
-/* styling for faq */
+/* support form container */
+.support-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: #1e293b;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+}
+
+/* FAQ accordion */
 .accordion {
-    background-color: #1e293b; /* slate-800 */
-    color: #cbd5e1; /* slate-300 */
+    background-color: #1e293b;
+    color: #cbd5e1;
     cursor: pointer;
     padding: 18px;
     width: 100%;
     text-align: left;
-    border: 1px solid #334155; /* slate-700 */
+    border: 1px solid #334155;
     border-radius: 6px;
     outline: none;
     transition: 0.3s;
@@ -125,60 +146,44 @@ button:hover {
 }
 
 .accordion:hover {
-    background-color: #334155; /* slate-700 */
+    background-color: #334155;
 }
 
-/* active accordion styling */
 .accordion.active {
-    background-color: #334155; /* slate-700 */
+    background-color: #334155;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-bottom: 0;
 }
 
-/* hidden panel that expands */
 .panel {
     padding: 0;
-    background-color: #1e293b; /* slate-800 */
+    background-color: #1e293b;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
-    border-left: 1px solid #334155; /* slate-700 */
-    border-right: 1px solid #334155; /* slate-700 */
-    border-bottom: 1px solid #334155; /* slate-700 */
+    border-left: 1px solid #334155;
+    border-right: 1px solid #334155;
+    border-bottom: 1px solid #334155;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     margin-bottom: 8px;
 }
 
-/* content inside the accordion panel */
 .panel-content {
     padding: 18px;
-    color: #94a3b8; /* slate-400 */
+    color: #94a3b8;
     line-height: 1.5;
 }
 
-/* plus sign for closed accordion */
 .accordion:after {
     content: '+';
     font-size: 18px;
-    color: #94a3b8; /* slate-400 */
+    color: #94a3b8;
 }
 
-/* minus sign for open accordion */
 .accordion.active:after {
     content: '-';
-}
-
-/* support form container */
-.support-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background-color: #1e293b; /* slate-800 */
-    padding: 24px;
-    border-radius: 12px;
-    border: 1px solid #334155; /* slate-700 */
 }
 
 /* footer */
@@ -186,13 +191,11 @@ button:hover {
     text-align: center;
 }
 
-/* blue link that go to faq page */
 .footer a {
-    color: #38bdf8; /* sky-400 */
+    color: #38bdf8;
     text-decoration: none;
 }
 
-/* underline the link when hover */
 .footer a:hover {
     text-decoration: underline;
 }
