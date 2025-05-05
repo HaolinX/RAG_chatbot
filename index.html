@@ -22,16 +22,18 @@
     </head>
     <body>
         <!-- Header with illustration -->
+        <div class="container">
+
         <header>
             <!-- Logo in top left -->
-            <div class="logo">RAGBot</div>
+            <div class="logo"><li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li></div>
 
             <!-- Login/Registration Section -->
             <button id="loginBtn">Login / Register</button>
-
-            <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" />
         </header>
-
+            
+        <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" class="web-cover"/>
+        
 
         <div id="authModal" class="modal hidden">
             <div class="modal-content">
@@ -61,48 +63,54 @@
             </div>
         </div>
 
-        <div class="spacer"></div>
+        <div class="spacer" data-aos="fade-right"></div>
 
         <section class="ChatBot" data-aos="fade-up">
-            <li><a href="chat-bot.html">PROTOTYPE</a></li>
+            <li><a href="chat-bot.html" class="button-link">PROTOTYPE</a></li>
         </section>
 
-        <div class="spacer"></div>
+        <div class="spacer" data-aos="fade-right"></div>
 
         <!-- About Section -->
-        <section class="about" data-aos="zoom-in">
+        <section class="about" data-aos="fade-up">
             <h2>About Us</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt, dui quis finibus tempor, augue tortor aliquam lectus, ac lobortis ante libero in ex. Donec eu blandit nisl. Maecenas posuere, elit in tristique volutpat, ipsum nunc cursus lorem, a malesuada augue elit non metus. Donec placerat, enim vel pharetra viverra, odio risus eleifend augue, ac mattis lacus metus ut nisi. Suspendisse feugiat, leo ac lobortis aliquam, nisi neque aliquam metus, non facilisis urna tortor id leo. Suspendisse id dapibus nisl, sed placerat ipsum. Vivamus et pellentesque libero. Pellentesque congue bibendum libero fermentum tincidunt. Morbi tempor odio sit amet suscipit vestibulum. Cras non magna vel leo elementum sollicitudin nec eu urna.</p>
         </section>
 
-        <div class="spacer"></div>
+        <div class="spacer" data-aos="fade-right"></div>
 
         <!-- FAQ Section -->
         <section class="faq" data-aos="fade-up">
             <h2>Frequently Asked Questions</h2>
-            <li><a href="faq.html">Frequently Asked Questions</a></li>
+            <li><a href="faq.html" class="button-link">Frequently Asked Questions</a></li>
         </section>
 
-        <div class="spacer"></div>
+        <div class="spacer" data-aos="fade-right"></div>
 
         <!-- Support Section -->
         <section class="support" data-aos="fade-up">
             <h2>Need Help?</h2>
             <p>If you have any questions or need assistance, please contact our support team.</p>
-            <li><a href="support-form.html">Contact Support</a></li>
+            <li><a href="support-form.html" class="button-link">Contact Support</a></li>
         </section>
-        <div class="spacer"></div>
 
-        <!-- AOS JS -->
-        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-        <script>
-            AOS.init({
-                duration: 1000, // Animation duration in ms
-                once: false // Animation happens only once as you scroll
-            });
-        </script>
+        <footer>
+            <div class="footer">
+            <p>&copy; 2025 RAGBot. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
 
-        <!-- links to the javascript file -->
-        <script src="auth-modal.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            once: false // Animation happens only once as you scroll
+        });
+    </script>
+
+    <!-- links to the javascript file -->
+    <script src="auth-modal.js"></script>
     </body>
 </html>

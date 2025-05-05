@@ -14,16 +14,24 @@ body {
     scroll-behavior: smooth;
 }
 
-header {
-    text-align: center;
-    padding: 60px 20px;
+.container {
+    width: 100%;
+    max-width: 100%; /* limit the container on big screens */
+    margin: 0 auto;
 }
 
-header img {
-    padding-top: 15px;
-    width: 100%;
-    max-height: 500px;
-    object-fit: cover;
+header {
+    position: relative;
+    text-align: center;
+    padding: 30px;
+    background-color: #1d2331;
+} 
+
+.web-cover {
+    width: 50%;
+    height: 25%;
+    display: block;
+    margin: 0 auto;
 }
 
 .logo {
@@ -32,13 +40,15 @@ header img {
     top: 15px;
     left: 20px;
     font-weight: bold;
+    list-style-type: none;
+    
 }
 
 section {
+    border-left: #cccccc dashed 2px;
     padding: 50px 20px;
-    max-width: 800px;
+    width:50%;
     margin: auto;
-    
 }
 
 h1, h2 {
@@ -53,22 +63,12 @@ p {
 
 
 .spacer {
-    height: 5px;
+    border-top: #babacadc dashed 2px;
+    border-bottom: #babacadc dashed 2px;
+    height: 10px;
 }
 
-/* .login {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-} */
-
-.ChatBot{
-    display: flex;
-    justify-content: center;
-    align-items: start;
-}
-
-.ChatBot a {
+.button-link {
     background-color: #1d4ed8; /* blue-700 */
     color: white; /* white text font */
     border: none;
@@ -80,47 +80,31 @@ p {
     width: 50%; /* full width of button */
     text-decoration: none; /* remove underline */
 }
+.ChatBot{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    list-style-type: none;
+}
 
 .about {
-    padding: 10px;
-    border-radius: 8px;;
+    background-color: #1d2331;
+    
 }
 
-.faq a {
-    background-color: #1d4ed8; /* blue-700 */
-    color: white; /* white text font */
-    border: none;
-    padding: 12px 24px; /* size inside button */
-    border-radius: 20px; /* round the button corners */
-    font-size: 16px; /* font size */
-    cursor: pointer;
-    height: 5rem; /* height of button */
-    width: 50%; /* full width of button */
-    text-decoration: none;
-}
-
-
-.support {
-    padding: 10px;
-    border-radius: 8px;;
-    margin-bottom: 80px;
-}
-
-.support a {
-    background-color: #1d4ed8; /* blue-700 */
-    color: white; /* white text font */
-    border: none;
-    padding: 12px 24px; /* size inside button */
-    border-radius: 20px; /* round the button corners */
-    font-size: 16px; /* font size */
-    cursor: pointer;
-    height: 5rem; /* height of button */
-    width: 50%; /* full width of button */
-    text-decoration: none;
+.faq, .support{
+    list-style-type: none; /* remove bullet points */
 }
 
 .ChatBot a:hover,
 .faq a:hover,
 .support a:hover {
   background-color: #1e40af; /* blue-800 */
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #1d2331;
+    color: #ffffff;
 }
