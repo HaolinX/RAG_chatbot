@@ -172,7 +172,7 @@ app.post('/upload-base64', async (req, res) => {
     fs.writeFileSync(filePath, pdfBuffer);
 
     req.file = { path: filePath, filename: savedFilename };
-    await processPDF(req, res);
+    return await processPDF(req, res);
   } catch (error) {
     console.error('Error processing base64 PDF:', error);
     res.status(500).json({ error: 'Error processing PDF: ' + error.message });
@@ -208,7 +208,7 @@ async function processPDF(req, res) {
     console.log('Generating summary...');
     const summary = await generateBARTSummary(text);
 
-    res.json({
+    return res.json({
       message: 'PDF uploaded and processed successfully',
       filename: req.file.filename,
       summary: summary
