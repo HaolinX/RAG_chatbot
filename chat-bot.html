@@ -4,233 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBot Interface</title>
-    <link rel="stylesheet" href="chat-bot.css">
+    <title>RAGBot - PDF AI Assistant</title>
+    <link rel="stylesheet" href="./chat_styles.css">
 </head>
-<!-- Chat Structure -->
 
 <body>
-    <div class="chat-container">
-        <div class="chat-header"></div>
-        <li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>RAGBot</h1>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+
+            <!-- Main Chat Area -->
+            <div class="chat-area" id="chatMessages">
+                <!-- Welcome message -->
+                <div class="message bot welcome-message">
+                    <p>Welcome to RAGBot! Upload a PDF to get started.</p>
+                    <p>I can summarize documents and answer your questions about them.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload PDF Button (Floating) -->
+        <div class="upload-button-container">
+            <button id="uploadButton" class="primary-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                    <path
+                        d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                </svg>
+                Upload PDF
+            </button>
+        </div>
+
+        <!-- Upload Modal -->
+        <div class="modal-overlay hidden" id="uploadModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Upload PDF Document</h3>
+                    <button class="close-button" id="closeUploadModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="drop-area" id="dropArea">
+                        <div class="drop-content">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                <path
+                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                            </svg>
+                            <p>Drag & drop your PDF here</p>
+                            <p class="small-text">or</p>
+                            <button class="secondary-button" id="selectFileButton">Browse Files</button>
+                            <input type="file" id="fileInput" accept="application/pdf" class="hidden">
+                        </div>
+                    </div>
+                    <div class="upload-status" id="uploadStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Modal -->
+        <div class="modal-overlay hidden" id="summaryModal">
+            <div class="modal-content wide-modal">
+                <div class="modal-header">
+                    <h3>Document Summary</h3>
+                    <button class="close-button" id="closeSummaryModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="status-message" id="summaryStatus">
+                        <div class="spinner"></div>
+                        <p>Processing your document...</p>
+                    </div>
+                    <div class="summary-content hidden" id="summaryContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Input Area -->
+        <div class="input-container hidden" id="questionInputContainer">
+            <div class="input-box">
+                <textarea id="questionInput" placeholder="Ask a question about this document..."></textarea>
+                <button id="askButton" class="primary-button">Ask</button>
+            </div>
+            <div class="answer-container hidden" id="answerContainer">
+                <div class="status-message" id="qaStatus"></div>
+                <div class="answer-content" id="answerContent"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="chat-messages" id="chatMessages"></div>
-
-    <!-- Upload PDF Button -->
-    <div class="upload-button-container">
-        <button id="uploadButton">Upload PDF</button>
-    </div>
-
-    <!-- Upload Section (above input) -->
-    <div class="upload-area hidden" id="drop-area">
-        <div class="close-button" id="closeUploadArea"> x </div> <!-- 'x' as a simple close icon -->
-        <p>Drag & drop PDF or click to select</p>
-        <input type="file" id="fileInput" accept="application/pdf" style="display: none;">
-        <button id="selectButton">Select PDF</button>
-        <p class="status" id="fileStatus"></p>
-    </div>
-
-    <!-- Summary Section (center of screen) -->
-    <div class="result-section hidden" id="summarySection">
-        <h3>Document Summary</h3>
-        <p class="status" id="summaryStatus">Processing...</p>
-        <pre id="summaryResult" class="hidden"></pre>
-    </div>
-
-    <!-- Q&A Section (center of screen) -->
-    <div class="result-section hidden" id="qaSection">
-        <h3>Ask a Question</h3>
-        <textarea id="questionInput" placeholder="Enter your question about the document..."></textarea>
-        <button id="askButton">Ask</button>
-        <p class="status hidden" id="qaStatus">Processing question...</p>
-        <pre id="answerResult" class="hidden"></pre>
-    </div>
-
-    <!-- Message Input (at the bottom) -->
-    <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
-    </div>
-    <script>
-        // Global variables
-        let currentFileName = null;
-
-        // DOM Elements
-        const uploadButton = document.getElementById('uploadButton');
-        const dropArea = document.getElementById('drop-area');
-        const fileInput = document.getElementById('fileInput');
-        const selectButton = document.getElementById('selectButton');
-        const fileStatus = document.getElementById('fileStatus');
-
-        const summarySection = document.getElementById('summarySection');
-        const summaryStatus = document.getElementById('summaryStatus');
-        const summaryResult = document.getElementById('summaryResult');
-
-        const qaSection = document.getElementById('qaSection');
-        const questionInput = document.getElementById('questionInput');
-        const askButton = document.getElementById('askButton');
-        const qaStatus = document.getElementById('qaStatus');
-        const answerResult = document.getElementById('answerResult');
-
-        // Event listeners
-        selectButton.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', handleFileSelect);
-        askButton.addEventListener('click', askQuestion);
-        uploadButton.addEventListener('click', uploadArea);
-        document.getElementById('closeUploadArea').addEventListener('click', closeUploadArea);
-
-        // Toggle upload area visibility
-        function uploadArea() {
-            dropArea.classList.remove('hidden');
-        }
-        
-        // Close upload area
-        function closeUploadArea() {
-            dropArea.classList.add('hidden');
-            uploadButton.parentElement.classList.remove('hidden');
-        }
-
-        // Drag and drop handlers
-        dropArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropArea.classList.add('highlight');
-        });
-
-        dropArea.addEventListener('dragleave', () => {
-            dropArea.classList.remove('highlight');
-        });
-
-        dropArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropArea.classList.remove('highlight');
-
-            if (e.dataTransfer.files.length > 0) {
-                const file = e.dataTransfer.files[0];
-                if (file.type === 'application/pdf') {
-                    handleFile(file);
-                } else {
-                    fileStatus.textContent = 'Please upload a PDF file.';
-                }
-            }
-        });
-
-        // Handle file selection
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        }
-
-        // Process the selected file
-        function handleFile(file) {
-            fileStatus.textContent = `Selected: ${file.name} (${formatSize(file.size)})`;
-
-            // Convert to base64
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const base64PDF = e.target.result;
-                uploadPDF(base64PDF, file.name);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Format file size
-        function formatSize(bytes) {
-            if (bytes < 1024) return bytes + ' bytes';
-            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            else return (bytes / 1048576).toFixed(1) + ' MB';
-        }
-
-        // Upload PDF to server
-        async function uploadPDF(base64PDF, filename) {
-            fileStatus.textContent = 'Uploading and processing...';
-
-            try {
-                const response = await fetch('http://localhost:3001/upload-base64', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        base64PDF,
-                        filename
-                    }),
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    fileStatus.textContent = 'Processing complete!';
-                    currentFileName = data.filename;
-
-                    // hide upload area after successful upload
-                    dropArea.classList.add('hidden');
-
-                    // Display summary
-                    summarySection.classList.remove('hidden');
-                    summaryStatus.classList.add('hidden');
-                    summaryResult.textContent = data.summary;
-                    summaryResult.classList.remove('hidden');
-
-                    // Enable Q&A
-                    qaSection.classList.remove('hidden');
-                } else {
-                    fileStatus.textContent = `Error: ${data.error || 'Failed to process PDF'}`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                fileStatus.textContent = 'Error processing PDF. Please try again.';
-            }
-        }
-
-        // Ask a question
-        async function askQuestion() {
-            const question = questionInput.value.trim();
-
-            if (!question) {
-                alert('Please enter a question.');
-                return;
-            }
-
-            if (!currentFileName) {
-                alert('Please upload a PDF first.');
-                return;
-            }
-
-            // Show loading
-            qaStatus.classList.remove('hidden');
-            answerResult.classList.add('hidden');
-
-            try {
-                const response = await fetch('http://localhost:3001/ask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        question,
-                        filename: currentFileName
-                    }),
-                });
-
-                const data = await response.json();
-                console.log(data);
-                if (response.ok) {
-                    qaStatus.classList.add('hidden');
-                    answerResult.textContent = data['answer'];
-                    answerResult.classList.remove('hidden');
-                } else {
-                    qaStatus.textContent = `Error: ${data.error || 'Failed to process question'}`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                qaStatus.textContent = 'Error processing question. Please try again.';
-            }
-        }
-    </script>
+    <script src="chat-bot.js"></script>
 </body>
 
 </html>
