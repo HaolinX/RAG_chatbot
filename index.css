@@ -88,11 +88,25 @@ p {
     width: 50%; /* full width of button */
     text-decoration: none; /* remove underline */
 }
+
 .ChatBot{
     display: flex;
     justify-content: center;
     align-items: start;
     list-style-type: none;
+}
+
+.button-chat {
+    background-color: #1d4ed8; /* blue-700 */
+    color: white; /* white text font */
+    border: none;
+    padding: 12px 48px; /* size inside button */
+    border-radius: 20px; /* round the button corners */
+    font-size: 32px; /* font size */
+    cursor: pointer;
+    height: 5rem; /* height of button */
+    width: 50%; /* full width of button */
+    text-decoration: none; /* remove underline */
 }
 
 .about {
