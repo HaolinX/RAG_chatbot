@@ -1,18 +1,23 @@
 <!-- source: https://www.w3schools.com/howto/howto_js_accordion.asp -->
 <!-- https://www.geeksforgeeks.org/how-to-create-an-faq-section-to-any-website-using-javascript/ -->
+<!-- use 'shift+option+f' to format the code on mac -->
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ Page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header>
         <!-- Logo in top left -->
-        <div class="logo"><li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li></div>
+        <div class="logo">
+            <li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li>
+        </div>
 
         <!-- navigation bar -->
         <nav>
@@ -20,40 +25,55 @@
             <a href="support-form.html">Contact</a>
             <a href="faq.html">FAQ's</a>
         </nav>
-    </header> 
+    </header>
     <div class="container">
         <h1>Frequently Asked Questions</h1>
-        
-        <button class="accordion">What is Lorem Ipsum?</button>
+
+        <button class="accordion">What is a RAG chatbot?</button>
         <div class="panel">
             <div class="panel-content">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                A RAG (Retrieval-Augmented Generation) chatbot is an advanced type of AI assistant that combines natural
+                language generation with document retrieval. It fetches relevant information from a knowledge base or
+                database and uses that to generate more accurate and context-aware responses.
             </div>
         </div>
 
-        <button class="accordion">Why do we use it?</button>
+        <button class="accordion">How does the RAG chatbot find answers?</button>
         <div class="panel">
             <div class="panel-content">
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                When user asks a question, the chatbot searches through a collection of documents using
+                similarity matching. It retrieves the most relevant pieces of text, then uses a language model to
+                generate a response based on that retrieved content.
             </div>
         </div>
 
-        <button class="accordion">Where does it come from?</button>
+        <button class="accordion">What kind of documents can the chatbot use?</button>
         <div class="panel">
             <div class="panel-content">
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.
+                The chatbot can work with PDFs. As long as the documents are indexed properly during setup, the chatbot
+                can retrieve information from them
+                to answer questions.
             </div>
         </div>
 
-        <button class="accordion">Where can I get some?</button>
+        <button class="accordion">How often is the chatbot's knowledge updated?</button>
         <div class="panel">
             <div class="panel-content">
-                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                The chatbot's knowledge depends on the documents it retrieves from. To keep it up to date, new or
+                revised documents need to be added and re-indexed.
+            </div>
+        </div>
+
+        <button class="accordion">Can the chatbot answer questions not covered in the documents?</button>
+        <div class="panel">
+            <div class="panel-content">
+                The chatbot is best at answering questions based on the provided documents.
             </div>
         </div>
     </div>
-    
+
     <!-- links to the javascript file -->
     <script src="faq.js"></script>
 </body>
+
 </html>
