@@ -13,12 +13,13 @@ const { PromptTemplate } = require("@langchain/core/prompts");
 const { ChatOpenAI } = require("@langchain/openai");
 const { StringOutputParser } = require("@langchain/core/output_parsers");
 const { RunnableSequence } = require("@langchain/core/runnables");
+const { Embeddings } = require("@langchain/core/embeddings");
 
 // Initialize ChatOpenAI
 const model = new ChatOpenAI({
     modelName: "gpt-4o-mini",
     temperature: 0.7,
-    openAIApiKey: process.env.OPENAI_API_KEY,
+    openAIApiKey: process.env.OPENAI_API_KEY
 });
 
 // Create a custom prompt template for better answers
@@ -33,15 +34,22 @@ Please provide a clear and helpful response:`;
 
 // --- App Setup ---
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8277;
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:8277'],
+    credentials: true
+}));
 
 // --- Middleware ---
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Import auth routes and middleware
+const { router: authRouter, verifyToken } = require('./routes/auth');
+app.use('/api/auth', authRouter);
 
 // --- File Upload Setup ---
 const storage = multer.diskStorage({
@@ -74,7 +82,7 @@ let pipelineInstance = null;
 // --- Custom Transformer Embeddings ---
 class TransformerEmbeddings extends Embeddings {
   constructor(modelName = 'Xenova/all-MiniLM-L6-v2') {
-    super({});
+    super();
     this.modelName = modelName;
     this.embeddingPipeline = null;
   }
@@ -176,9 +184,9 @@ const qaModel = new HuggingFaceQA();
 
 // --- Routes ---
 
-app.post('/upload', upload.single('pdf'), processPDF);
-
-app.post('/upload-base64', async (req, res) => {
+// Add authentication check for PDF routes
+app.post('/upload', verifyToken, upload.single('pdf'), processPDF);
+app.post('/upload-base64', verifyToken, async (req, res) => {
   try {
     const { base64PDF, filename } = req.body;
     if (!base64PDF || !filename) return res.status(400).json({ error: 'PDF data and filename are required' });
@@ -238,7 +246,7 @@ async function processPDF(req, res) {
 }
 
 // --- Q&A Endpoint with ChatGPT-4 ---
-app.post('/ask', async (req, res) => {
+app.post('/ask', verifyToken, async (req, res) => {
     try {
         const { question, filename } = req.body;
         if (!question || !filename) return res.status(400).json({ error: 'Question and filename are required' });
@@ -331,9 +339,59 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join('/public', 'index.html'));
-// });
+// Health check endpoints
+app.get('/api/health/db', async (req, res) => {
+    try {
+        // Test database connection using the existing pool
+        await pool.query('SELECT 1');
+        res.status(200).json({ status: 'healthy' });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+app.get('/api/health/auth', async (req, res) => {
+    try {
+        // Verify JWT functionality
+        const testToken = jwt.sign({ test: true }, process.env.JWT_SECRET, { expiresIn: '1m' });
+        jwt.verify(testToken, process.env.JWT_SECRET);
+        res.status(200).json({ status: 'healthy' });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+app.get('/api/health/chat', async (req, res) => {
+    try {
+        // Test if the chat model is available
+        if (model) {
+            res.status(200).json({ status: 'healthy' });
+        } else {
+            throw new Error('Chat model not initialized');
+        }
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+app.post('/api/cache/clear', async (req, res) => {
+    try {
+        // Clear vector store cache
+        const vectorstorePath = path.join(__dirname, 'vectorstore');
+        if (fs.existsSync(vectorstorePath)) {
+            fs.rmSync(vectorstorePath, { recursive: true, force: true });
+            fs.mkdirSync(vectorstorePath);
+        }
+        res.status(200).json({ status: 'success', message: 'Cache cleared successfully' });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// Protected route check
+app.get('/api/check-auth', verifyToken, (req, res) => {
+    res.json({ authenticated: true });
+});
 
 // --- Start Server ---
 app.listen(PORT, () => {

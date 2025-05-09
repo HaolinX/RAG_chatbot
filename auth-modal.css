@@ -12,142 +12,206 @@
 
 /* login button */
 #loginBtn {
-  background-color: #1d4ed8; /* blue-700 */
-  color: white; /* white text font*/
-  border: none;
-  padding: 6px 12px; /* size inside button */
-  border-radius: 15px; /* round the button corners */
-  font-size: 16px; /* font size */
-  cursor: pointer;
-  height: 35px; /* height of button */
-  position: absolute; /* position in top right */
-  top: 25px;
-  right: 20px;
+    background-color: #1d4ed8;
+    /* blue-700 */
+    color: white;
+    /* white text font*/
+    border: none;
+    padding: 6px 12px;
+    /* size inside button */
+    border-radius: 15px;
+    /* round the button corners */
+    font-size: 16px;
+    /* font size */
+    cursor: pointer;
+    height: 35px;
+    /* height of button */
+    position: absolute;
+    /* position in top right */
+    top: 25px;
+    right: 20px;
 }
 
 /* change button color when hover */
-.form button:hover, #loginBtn:hover {
-  background-color: #1e40af; /* blue-800 */
+.form button:hover,
+#loginBtn:hover {
+    background-color: #1e40af;
+    /* blue-800 */
 }
 
 /* modal box w3schools */
 .modal {
-  position: fixed;                  
-  top: 0;                           /* set it to top of viewport */
-  left: 0;                          /* set it to left of viewport */
-  width: 100%;                      /* full width of viewport */
-  height: 100%;                     /* full height of viewport */
-  background: rgba(0, 0, 0, 0.1);   /* background with opacity */
-  backdrop-filter: blur(5px); /* optional blur */
-  display: flex;                    /* use flexbox */
-  justify-content: center;          
-  align-items: center;              
-  z-index: 1000;                    /* places modal above other content */
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
 }
 
-/* use to hide element */
-.hidden {
-  display: none;
+.modal.hidden {
+    display: none;
 }
 
 .modal-content {
-  background-color: #1e293b; /* slate-800 */
-  border-radius: 12px; /* round the corners */
-  width: 90%;
-  max-width: 440px;
-  padding: 24px;
-  position: relative;
-  border: 1px solid #334155; /* slate-700 */
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
 }
 
 /* close button */
 .close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-size: 24px;
-  color: #94a3b8; /* slate-400 */
-  cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
 }
 
 /* change button color when hover */
 .close:hover {
-  color: #f1f5f9; /* slate-100 */
+    color: #000;
 }
 
 /* login & signup tab */
 .tabs {
-  display: flex;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #334155; /* slate-700 */
-
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
 }
 
 /* styles for the tab button */
 .tab {
-  background: transparent;
-  border: none;
-  color: #94a3b8; /* slate-400 */
-  padding: 12px 16px;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  flex: 1;
-  text-align: center;
-  cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    transition: all 0.3s ease;
 }
 
 /* active tab */
 .tab.active {
-  color: #38bdf8; /* sky-400 */
-  border-bottom: 2px solid #38bdf8; /* blue line under active tab */
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+    margin-bottom: -2px;
 }
 
 /* Changes tab color on hover (except for active tab) */
 .tab:hover:not(.active) {
-  color: #cbd5e1; /* slate-300 */
+    color: #cbd5e1;
+    /* slate-300 */
 }
 
 .form {
-  display: none;
-  flex-direction: column;
-  gap: 16px;
+    display: none;
 }
 
 .form.active {
-  display: flex;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .form input {
-  padding: 12px 16px;
-  border-radius: 6px;
-  border: 1px solid #334155; /* slate-700 */
-  background-color: #0f172a; /* slate-900 */
-  color: white;
-  font-size: 16px;
-  transition: border-color 0.2s ease; /* smooth border color change */
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
 }
 
 .form input:focus {
-  outline: none;
-  border-color: #38bdf8; /* blue border on focus */
-  box-shadow: 0 0 0 1px #38bdf8; /* add blue glow on focus */
+    border-color: #3498db;
+    outline: none;
 }
 
 /* placeholder text */
 .form input::placeholder {
-  color: #64748b; /* slate-500 */
+    color: #64748b;
+    /* slate-500 */
 }
 
 /* form buttons */
 .form button {
-  background-color: #1d4ed8; /* blue-700 */
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.2s ease; /* smooth color change */
-  margin-top: 8px;
-  cursor: pointer;
+    background-color: #1d4ed8;
+    /* blue-700 */
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    /* smooth color change */
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.auth-button {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+    background-color: #2980b9;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    min-height: 20px;
+}
+
+/* Animation for forms */
+.form.active {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .tab {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .form input,
+    .auth-button {
+        padding: 10px;
+        font-size: 14px;
+    }
 }

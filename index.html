@@ -2,27 +2,29 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>RAGBot</title>
 
-        <!-- Google Font -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGBot</title>
 
-        <!-- AOS CSS for animation -->
-        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
-        <!-- Jayden's AuthModal -->       
-        <link rel="stylesheet" href="auth-modal.css">
+    <!-- AOS CSS for animation -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
-        <!-- style sheet for home page -->
-        <link rel="stylesheet" href="index.css">
+    <!-- Jayden's AuthModal -->
+    <link rel="stylesheet" href="auth-modal.css">
 
-    </head>
-    <body>
-        <!-- Header with illustration -->
-        <div class="container">
+    <!-- style sheet for home page -->
+    <link rel="stylesheet" href="index.css">
+
+</head>
+
+<body>
+    <!-- Header with illustration -->
+    <div class="container">
 
         <header>
             <!-- Logo in top left -->
@@ -36,46 +38,46 @@
             <!-- navigation bar -->
             <nav>
                 <a href="index.html">Home</a>
-                <a href="support-form.html">Contact</a>
                 <a href="faq.html">FAQ's</a>
             </nav>
         </header>
-            
-        <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" class="web-cover"/>
-        
+
+        <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" class="web-cover" />
+
 
         <div id="authModal" class="modal hidden">
             <div class="modal-content">
-            <span class="close">&times;</span>
+                <span class="close">&times;</span>
 
-            <!-- Tab buttons -->
-            <div class="tabs">
-                <button class="tab active" data-target="loginForm">Login</button>
-                <button class="tab" data-target="registerForm">Register</button>
-            </div>
+                <!-- Tab buttons -->
+                <div class="tabs">
+                    <button class="tab active" data-target="loginForm">Login</button>
+                    <button class="tab" data-target="registerForm">Register</button>
+                </div>
 
-            <!-- Login form -->
-            <form id="loginForm" class="form active">
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
+                <!-- Login form -->
+                <form id="loginForm" class="form active">
+                    <div class="error-message" id="loginError"></div>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="auth-button">Login</button>
+                </form>
 
-            <!-- Signup form -->
-            <form id="registerForm" class="form">
-                <input type="text" placeholder="Name" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <input type="password" placeholder="Confirm Password" required>
-                <button type="submit">Register</button>
-            </form>
+                <!-- Register form -->
+                <form id="registerForm" class="form">
+                    <div class="error-message" id="registerError"></div>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                    <button type="submit" class="auth-button">Register</button>
+                </form>
             </div>
         </div>
 
         <div class="spacer" data-aos="fade-right"></div>
 
         <section class="ChatBot" data-aos="fade-up">
-            <li><a href="chat-bot.html" class="button-chat">RAGBot</a></li>
+            <li><a href="#" id="prototypeBtn" class="button-link">PROTOTYPE</a></li>
         </section>
 
         <div class="spacer" data-aos="fade-right"></div>
@@ -83,7 +85,17 @@
         <!-- About Section -->
         <section class="about" data-aos="fade-up">
             <h2>About Us</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt, dui quis finibus tempor, augue tortor aliquam lectus, ac lobortis ante libero in ex. Donec eu blandit nisl. Maecenas posuere, elit in tristique volutpat, ipsum nunc cursus lorem, a malesuada augue elit non metus. Donec placerat, enim vel pharetra viverra, odio risus eleifend augue, ac mattis lacus metus ut nisi. Suspendisse feugiat, leo ac lobortis aliquam, nisi neque aliquam metus, non facilisis urna tortor id leo. Suspendisse id dapibus nisl, sed placerat ipsum. Vivamus et pellentesque libero. Pellentesque congue bibendum libero fermentum tincidunt. Morbi tempor odio sit amet suscipit vestibulum. Cras non magna vel leo elementum sollicitudin nec eu urna.</p>
+            <p>Welcome to <strong>RAGBot</strong>, your intelligent document assistant powered by advanced AI
+                technology. Our platform combines
+                the power of Retrieval-Augmented Generation (RAG) with an intuitive chat interface to help you extract
+                insights
+                from your documents effortlessly. Whether you're analyzing research papers, technical documentation, or
+                business
+                reports, RAGBot provides accurate, context-aware responses based on your uploaded documents.</p>
+            <p>Our mission is to make document interaction more efficient and intuitive. By leveraging state-of-the-art
+                natural language processing, we ensure that you can quickly find the information you need without having
+                to
+                manually search through lengthy documents.</p>
         </section>
 
         <div class="spacer" data-aos="fade-right"></div>
@@ -96,16 +108,9 @@
 
         <div class="spacer" data-aos="fade-right"></div>
 
-        <!-- Support Section -->
-        <section class="support" data-aos="fade-up">
-            <h2>Need Help?</h2>
-            <p>If you have any questions or need assistance, please contact our support team.</p>
-            <li><a href="support-form.html" class="button-link">Contact Support</a></li>
-        </section>
-
         <footer>
             <div class="footer">
-            <p>&copy; 2025 RAGBot. All rights reserved.</p>
+                <p>&copy; 2025 RAGBot. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -121,5 +126,6 @@
 
     <!-- links to the javascript file -->
     <script src="auth-modal.js"></script>
-    </body>
+</body>
+
 </html>

@@ -4,101 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAGBot - PDF AI Assistant</title>
-    <link rel="stylesheet" href="./chat_styles.css">
+    <title>RAGBot - Chat Interface</title>
+    <link rel="stylesheet" href="chat_styles.css">
 </head>
 
 <body>
     <div class="app-container">
-        <!-- Header -->
         <div class="header">
-            <li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li>
+            <h1>RAGBot Chat Interface</h1>
         </div>
 
-        <!-- Main Content Area -->
         <div class="content-area">
-
-            <!-- Main Chat Area -->
-            <div class="chat-area" id="chatMessages">
-                <!-- Welcome message -->
-                <div class="message bot welcome-message">
-                    <p>Welcome to RAGBot! Upload a PDF to get started.</p>
-                    <p>I can summarize documents and answer your questions about them.</p>
-                </div>
+            <div class="chat-area" id="chatArea">
+                <!-- Chat messages will appear here -->
             </div>
         </div>
 
-        <!-- Upload PDF Button (Floating) -->
-        <div class="upload-button-container">
-            <button id="uploadButton" class="primary-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path
-                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                    <path
-                        d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                </svg>
-                Upload PDF
-            </button>
-        </div>
-
-        <!-- Upload Modal -->
-        <div class="modal-overlay hidden" id="uploadModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Upload PDF Document</h3>
-                    <button class="close-button" id="closeUploadModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="drop-area" id="dropArea">
-                        <div class="drop-content">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                <path
-                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                            </svg>
-                            <p>Drag & drop your PDF here</p>
-                            <p class="small-text">or</p>
-                            <button class="secondary-button" id="selectFileButton">Browse Files</button>
-                            <input type="file" id="fileInput" accept="application/pdf" class="hidden">
-                        </div>
-                    </div>
-                    <div class="upload-status" id="uploadStatus"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary Modal -->
-        <div class="modal-overlay hidden" id="summaryModal">
-            <div class="modal-content wide-modal">
-                <div class="modal-header">
-                    <h3>Document Summary</h3>
-                    <button class="close-button" id="closeSummaryModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="status-message" id="summaryStatus">
-                        <div class="spinner"></div>
-                        <p>Processing your document...</p>
-                    </div>
-                    <div class="summary-content hidden" id="summaryContent"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Question Input Area -->
-        <div class="input-container hidden" id="questionInputContainer">
+        <div class="input-container">
             <div class="input-box">
-                <textarea id="questionInput" placeholder="Ask a question about this document..."></textarea>
-                <button id="askButton" class="primary-button">Ask</button>
-            </div>
-            <div class="answer-container hidden" id="answerContainer">
-                <div class="status-message" id="qaStatus"></div>
-                <div class="answer-content" id="answerContent"></div>
+                <textarea id="questionInput" placeholder="Ask a question..." rows="2"></textarea>
+                <button id="askButton" class="primary-button">Send</button>
             </div>
         </div>
     </div>
 
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload PDF</h3>
+                <button id="closeUploadModal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="dropArea" class="drop-area">
+                    <div class="drop-content">
+                        <span>Drag and drop your PDF here or</span>
+                        <button id="selectFileButton" class="secondary-button">Select File</button>
+                        <input type="file" id="fileInput" accept=".pdf" class="hidden" />
+                        <span class="small-text">Maximum file size: 10MB</span>
+                    </div>
+                </div>
+                <div id="uploadStatus" class="upload-status hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div id="summaryModal" class="modal-overlay hidden">
+        <div class="modal-content wide-modal">
+            <div class="modal-header">
+                <h3>Document Summary</h3>
+                <button id="closeSummaryModal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="summaryStatus" class="status-message"></div>
+                <div id="summaryContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-button-container">
+        <button id="uploadButton" class="primary-button">
+            Upload PDF
+        </button>
+    </div>
+
+    <script>
+        // Authentication check on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
+
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display username
+            if (username) {
+                document.getElementById('username-display').textContent = `Welcome, ${username}!`;
+            }
+
+            // Check token validity
+            fetch('http://localhost:3001/api/check-auth', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).catch(error => {
+                console.error('Auth check failed:', error);
+                logout();
+            });
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        }
+    </script>
     <script src="chat-bot.js"></script>
 </body>
 

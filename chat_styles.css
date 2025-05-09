@@ -1,302 +1,256 @@
-@font-face {
-    font-family: 'Telegraf';
-    font-style: normal;
-    font-weight: normal;
-    src: url('fonts/PPTelegraf-Regular.otf') format('opentype');
+/* Base styles */
+:root {
+    --primary-color: #2563eb;
+    --bg-dark: #1e293b;
+    --bg-darker: #0f172a;
+    --text-light: #f8f8f8;
+    --border-color: #334155;
 }
 
 body {
-    font-family: 'Telegraf', sans-serif;
     margin: 0;
-    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     height: 100vh;
-    background-color: #0f172a;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden;
 }
 
-/* App container */
 .app-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-#summaryContent {
-    color: white;
-}
-
-/* Header */
 .header {
-    background-color: #1d2331;
-    color: #f8f8f8;
-    padding: 100px;
+    background-color: var(--bg-darker);
+    color: var(--text-light);
+    padding: 1rem;
     text-align: center;
-    font-size: 60px;
-    font-weight: bold;
-    list-style-type: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Content area */
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
 .content-area {
-    display: flex;
     flex: 1;
     overflow: hidden;
+    position: relative;
 }
 
-/* Chat area */
 .chat-area {
-    flex: 1;
-    padding: 20px;
+    height: 100%;
+    padding: 1rem;
     overflow-y: auto;
-    background-color: #1d2331;
-    color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 300px;
-    background-color: #1e293b;
-    padding: 20px;
-}
-
-/* Messages */
 .message {
-    margin-bottom: 15px;
-    padding: 12px 16px;
+    max-width: 70%;
+    padding: 1rem;
     border-radius: 8px;
-    max-width: 80%;
-}
-
-.message.bot {
-    background-color: #334155;
-    color: #f8f8f8;
-    align-self: flex-start;
+    white-space: pre-wrap;
 }
 
 .message.user {
-    background-color: #007bff;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--text-light);
     align-self: flex-end;
+    border-bottom-right-radius: 2px;
 }
 
-.message.welcome-message {
-    background-color: transparent;
-    border: 1px solid #334155;
-    color: #f8f8f8;
+.message.bot {
+    background-color: var(--border-color);
+    color: var(--text-light);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
 }
 
-/* Upload button */
-.upload-button-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
+.input-container {
+    padding: 1rem;
+    background-color: var(--bg-darker);
+    border-top: 1px solid var(--border-color);
+}
+
+.input-box {
+    display: flex;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.input-box textarea {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    resize: none;
+    min-height: 2.5rem;
+}
+
+.input-box textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 .primary-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
     border: none;
-    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
+    font-size: 1rem;
+    transition: background-color 0.2s;
 }
 
 .primary-button:hover {
-    background-color: #0056b3;
+    opacity: 0.9;
 }
 
-.secondary-button {
-    background-color: #334155;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.upload-button-container {
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+    z-index: 10;
 }
 
-.secondary-button:hover {
-    background-color: #475569;
-}
-
-/* Modals */
+/* Modal styles */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
-.modal-overlay.hidden {
-    display: none;
-}
-
 .modal-content {
-    background-color: #1e293b;
+    background-color: var(--bg-dark);
     border-radius: 8px;
-    width: 500px;
-    max-width: 90%;
-    max-height: 90vh;
-    overflow: auto;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
 }
 
 .wide-modal {
-    width: 700px;
+    max-width: 700px;
 }
 
 .modal-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #334155;
-    position: relative;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
     margin: 0;
-    color: #f8f8f8;
+    color: var(--text-light);
 }
 
 .modal-body {
-    padding: 20px;
+    padding: 1.5rem;
 }
 
-/* Drop area */
+.close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background-color: var(--border-color);
+}
+
 .drop-area {
-    border: 2px dashed #475569;
+    border: 2px dashed var(--border-color);
     border-radius: 8px;
-    padding: 40px 20px;
+    padding: 2rem 1rem;
     text-align: center;
     cursor: pointer;
+    transition: border-color 0.2s;
 }
 
 .drop-area:hover {
-    border-color: #007bff;
+    border-color: var(--primary-color);
 }
 
 .drop-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    color: #f8f8f8;
+    gap: 1rem;
+    color: var(--text-light);
 }
 
-.drop-content svg {
-    color: #007bff;
+.secondary-button {
+    background-color: var(--border-color);
+    color: var(--text-light);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+}
+
+.secondary-button:hover {
+    opacity: 0.9;
 }
 
 .small-text {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #94a3b8;
 }
 
-/* Upload status */
-.upload-status {
-    margin-top: 20px;
-    padding: 12px;
-    border-radius: 6px;
-    background-color: #334155;
-    color: #f8f8f8;
-}
-
-/* Status messages */
 .status-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: #f8f8f8;
-    padding: 20px;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    background-color: var (--border-color);
+    color: var(--text-light);
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #007bff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+.hidden {
+    display: none;
 }
 
+/* Loading animation */
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-/* Input container */
-.input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background-color: #1e293b;
-    border-top: 1px solid #334155;
-}
-
-.input-box {
-    display: flex;
-    gap: 12px;
-}
-
-.input-box textarea {
-    flex: 1;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #334155;
-    background-color: #1e293b;
-    color: #f8f8f8;
-    resize: none;
-    min-height: 60px;
-}
-
-.input-box textarea:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-/* Answer container */
-.answer-container {
-    margin-top: 20px;
-    padding: 16px;
-    border-radius: 8px;
-    background-color: #334155;
-    color: #f8f8f8;
-}
-
-/* Close button */
-.close-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
+.spinner {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--text-light);
+    border-top-color: var(--primary-color);
     border-radius: 50%;
-    background-color: #dc2626;
-    color: white;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-    cursor: pointer;
-    border: none;
-}
-
-.hidden {
-    display: none;
-}
-
-/* File input */
-.hidden {
-    display: none;
+    animation: spin 1s linear infinite;
 }
