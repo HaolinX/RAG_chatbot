@@ -4,14 +4,32 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
-// Using dynamic import for transformers
+require('dotenv').config();
 
 // --- LangChain Imports ---
 const { FaissStore } = require("@langchain/community/vectorstores/faiss");
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const { PromptTemplate } = require("@langchain/core/prompts");
-const { loadQAStuffChain } = require("langchain/chains");
-const { Embeddings } = require("@langchain/core/embeddings");
+const { ChatOpenAI } = require("@langchain/openai");
+const { StringOutputParser } = require("@langchain/core/output_parsers");
+const { RunnableSequence } = require("@langchain/core/runnables");
+
+// Initialize ChatOpenAI
+const model = new ChatOpenAI({
+    modelName: "gpt-4o-mini",
+    temperature: 0.7,
+    openAIApiKey: process.env.OPENAI_API_KEY,
+});
+
+// Create a custom prompt template for better answers
+const PROMPT_TEMPLATE = `
+You are a highly knowledgeable assistant. Based on the following context, provide a grammatically correct, well-mannered, and comprehensive answer to the question. If the context doesn't contain enough information to answer the question fully, say so politely.
+
+Context: {context}
+
+Question: {question}
+
+Please provide a clear and helpful response:`;
 
 // --- App Setup ---
 const app = express();
@@ -219,56 +237,69 @@ async function processPDF(req, res) {
   }
 }
 
-// --- Q&A Endpoint with Hugging Face model ---
+// --- Q&A Endpoint with ChatGPT-4 ---
 app.post('/ask', async (req, res) => {
-  try {
-    const { question, filename } = req.body;
-    if (!question || !filename) return res.status(400).json({ error: 'Question and filename are required' });
+    try {
+        const { question, filename } = req.body;
+        if (!question || !filename) return res.status(400).json({ error: 'Question and filename are required' });
 
-    const vectorStorePath = `vectorstore/${path.basename(filename, '.pdf')}`;
-    if (!fs.existsSync(vectorStorePath)) {
-      return res.status(404).json({ error: `Vector store for ${filename} not found. Please process the PDF first.` });
+        const vectorStorePath = `vectorstore/${path.basename(filename, '.pdf')}`;
+        if (!fs.existsSync(vectorStorePath)) {
+            return res.status(404).json({ error: `Vector store for ${filename} not found. Please process the PDF first.` });
+        }
+
+        console.log(`Loading vector store from: ${vectorStorePath}`);
+        await embeddings.init();
+        const vectorStore = await FaissStore.load(vectorStorePath, embeddings);
+
+        console.log('Searching for relevant context...');
+        const relevantDocs = await vectorStore.similaritySearch(question, 3);
+        console.log(`Found ${relevantDocs.length} relevant documents`);
+
+        if (relevantDocs.length === 0) {
+            return res.json({ answer: "I apologize, but I couldn't find relevant information in the document to answer your question." });
+        }
+
+        // Combine relevant docs into one context string
+        const context = relevantDocs
+            .map(doc => doc.pageContent ? String(doc.pageContent).trim() : "")
+            .filter(text => text.length > 0)
+            .join("\n\n");
+
+        if (!context || context.length === 0) {
+            return res.json({ answer: "I apologize, but the relevant sections of the document appear to be empty or invalid." });
+        }
+
+        // Create prompt with template
+        const prompt = PromptTemplate.fromTemplate(PROMPT_TEMPLATE);
+        
+        // Create a chain with ChatOpenAI
+        const chain = RunnableSequence.from([
+            {
+                context: (input) => input.context,
+                question: (input) => input.question
+            },
+            prompt,
+            model,
+            new StringOutputParser()
+        ]);
+
+        // Generate answer
+        console.log('Generating answer with GPT-4...');
+        const answer = await chain.invoke({
+            question: question,
+            context: context
+        });
+
+        console.log('Answer generated');
+        res.json({
+            answer: answer,
+            confidence: 0.95  // GPT-4 doesn't provide confidence scores, so we use a default high value
+        });
+    } catch (error) {
+        console.error('Error answering question:', error);
+        res.status(500).json({ error: 'Error answering question: ' + error.message });
     }
-
-    console.log(`Loading vector store from: ${vectorStorePath}`);
-    await embeddings.init();
-    const vectorStore = await FaissStore.load(vectorStorePath, embeddings);
-
-    console.log('Searching for relevant context...');
-    const relevantDocs = await vectorStore.similaritySearch(question, 3);
-    console.log(`Found ${relevantDocs.length} relevant documents`);
-
-    if (relevantDocs.length === 0) {
-      return res.json({ answer: "Could not find relevant information in the document to answer that question." });
-    }
-
-    // Initialize QA model
-    await qaModel.init();
-
-    // Combine relevant docs into one context string
-    // Make sure we're working with strings
-    const context = relevantDocs
-      .map(doc => doc.pageContent ? String(doc.pageContent).trim() : "")
-      .filter(text => text.length > 0)
-      .join("\n\n");
-
-    if (!context || context.length === 0) {
-      return res.json({ answer: "Found documents were empty or contained invalid content." });
-    }
-
-    console.log('Generating answer with Hugging Face QA model...');
-    const result = await qaModel.getAnswer(String(question), String(context));
-    console.log('Answer generated:', result.answer);
-
-    console.log('Answer generated');
-    res.json({
-      answer: result.answer,
-      confidence: result.score
-    });
-  } catch (error) {
-    console.error('Error answering question:', error);
-    res.status(500).json({ error: 'Error answering question: ' + error.message });
-  }
 });
 
 // --- Summarization Function ---
