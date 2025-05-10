@@ -86,6 +86,13 @@ async function uploadPDF(file) {
     const formData = new FormData();
     formData.append('pdf', file);
     
+    // Get auth token
+    const token = getAuthToken();
+    if (!token) {
+        showError('Please log in to upload files.');
+        return;
+    }
+    
     uploadStatus.textContent = 'Uploading...';
     uploadStatus.style.backgroundColor = '';
     uploadStatus.classList.remove('hidden');
@@ -93,25 +100,28 @@ async function uploadPDF(file) {
     try {
         const response = await fetch(`${API_URL}/upload`, {
             method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
 
         const data = await response.json();
         
         if (response.ok) {
-            currentFileName = file.name;
+            currentFileName = data.filename;
             uploadStatus.textContent = 'Upload successful! You can now ask questions.';
             uploadStatus.style.backgroundColor = '#22c55e';
             setTimeout(() => {
                 uploadModal.classList.add('hidden');
-                addMessage('bot', 'PDF uploaded successfully. What would you like to know about it?');
+                addMessage('bot', `PDF uploaded successfully. ${data.summary ? 'Summary: ' + data.summary : 'What would you like to know about it?'}`);
             }, 1500);
         } else {
-            showError(data.message || 'Upload failed. Please try again.');
+            showError(data.error || 'Upload failed. Please try again.');
         }
     } catch (error) {
         console.error('Upload error:', error);
-        showError('Upload failed. Please try again.');
+        showError('Connection error. Please try again.');
     }
 }
 
@@ -119,6 +129,13 @@ async function uploadPDF(file) {
 async function handleQuestion() {
     const question = questionInput.value.trim();
     if (!question) return;
+    
+    // Check authentication
+    const token = getAuthToken();
+    if (!token) {
+        addMessage('bot', 'Please log in to ask questions.');
+        return;
+    }
     
     if (!currentFileName) {
         addMessage('bot', 'Please upload a PDF first.');
@@ -133,10 +150,11 @@ async function handleQuestion() {
         const response = await fetch(`${API_URL}/ask`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ 
-                message: question,
+                question: question,
                 filename: currentFileName 
             })
         });
@@ -146,14 +164,23 @@ async function handleQuestion() {
         if (response.ok) {
             addMessage('bot', data.answer);
         } else {
-            addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+            addMessage('bot', data.error || 'Sorry, I encountered an error. Please try again.');
         }
     } catch (error) {
         console.error('Chat error:', error);
-        addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+        addMessage('bot', 'Connection error. Please try again.');
     } finally {
         askButton.disabled = false;
     }
+}
+
+function getAuthToken() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No authentication token found');
+        return null;
+    }
+    return token;
 }
 
 // Add message to chat

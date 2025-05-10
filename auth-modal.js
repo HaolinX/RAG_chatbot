@@ -1,4 +1,4 @@
-const API_URL = 'https://cs317.cs.ubc.ca:8277';
+const API_URL = 'http://localhost:8277';
 const loginBtn = document.getElementById('loginBtn');
 const prototypeBtn = document.getElementById('prototypeBtn');
 const modal = document.getElementById('authModal');
@@ -66,9 +66,18 @@ function showRegisterTab() {
     clearErrors();
 }
 
+// Helper: show error visually
+function showError(element, message) {
+    element.textContent = message;
+    element.style.display = 'block';
+    element.style.color = 'red';
+}
+
 function clearErrors() {
     loginError.textContent = '';
+    loginError.style.display = 'none';
     registerError.textContent = '';
+    registerError.style.display = 'none';
 }
 
 // Form submissions
@@ -95,7 +104,7 @@ loginForm.addEventListener('submit', async (e) => {
             localStorage.setItem('username', data.user.username);
             window.location.href = '/group-project-kunjcr2/chat-bot.html';
         } else {
-            loginError.textContent = data.error || 'Login failed';
+            showError(loginError, data.error || 'Login failed');
             if (data.error === 'User not found') {
                 setTimeout(() => {
                     showRegisterTab();
@@ -104,7 +113,7 @@ loginForm.addEventListener('submit', async (e) => {
         }
     } catch (error) {
         console.error('Login error:', error);
-        loginError.textContent = 'Connection error. Please try again.';
+        showError(loginError, 'Connection error. Please try again.');
     }
 });
 
@@ -117,7 +126,7 @@ registerForm.addEventListener('submit', async (e) => {
     const confirmPassword = registerForm.querySelector('input[name="confirmPassword"]').value;
 
     if (password !== confirmPassword) {
-        registerError.textContent = 'Passwords do not match';
+        showError(registerError, 'Passwords do not match');
         return;
     }
 
@@ -130,19 +139,21 @@ registerForm.addEventListener('submit', async (e) => {
             body: JSON.stringify({ username, password }),
         });
 
+        console.log('Response:', response);
         const data = await response.json();
+        console.log('Data:', data);
 
         if (response.ok) {
             registerForm.reset();
             showLoginTab();
-            loginError.textContent = 'Registration successful! Please log in.';
+            showError(loginError, 'Registration successful! Please log in.');
             loginError.style.color = '#4CAF50';
         } else {
-            registerError.textContent = data.error || 'Registration failed';
+            showError(registerError, data.error || 'Registration failed');
         }
     } catch (error) {
         console.error('Registration error:', error);
-        registerError.textContent = 'Connection error. Please try again.';
+        showError(registerError, 'Connection error. Please try again.');
     }
 });
 

@@ -57,18 +57,18 @@ const initDatabase = async () => {
         console.log(`Host: ${process.env.DB_HOST}, Database: ${process.env.DB_DATABASE}, User: ${process.env.DB_USER}`);
         
         const connection = await pool.getConnection();
-        console.log('✅ Successfully connected to database');
+        console.log('Successfully connected to database');
         
         // Create users table if not exists
-        await connection.execute(`
-            CREATE TABLE IF NOT EXISTS users (
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS ragbot (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✅ Table users is ready');
+        console.log('Table users is ready');
         connection.release();
         return true;
     } catch (err) {
@@ -138,7 +138,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Get user
-        const [users] = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+        const [users] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
         if (users.length === 0) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
