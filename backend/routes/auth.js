@@ -33,14 +33,33 @@ const verifyToken = async (req, res, next) => {
     }
 };
 
+// Log all auth requests
+router.use((req, res, next) => {
+    console.log(`[AUTH] ${req.method} ${req.originalUrl} - Body:`, req.body);
+    next();
+});
+
 // Test database connection and create table
-(async () => {
+const initDatabase = async () => {
     try {
-        const connection = await pool.getConnection();
-        console.log('Successfully connected to database:', process.env.DB_DATABASE);
-        console.log('Using host:', process.env.DB_HOST);
+        // Check if required environment variables exist
+        const requiredEnvVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_DATABASE'];
+        const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
         
-        // Create users table if not exists (simplified schema matching end_to_end)
+        if (missingVars.length > 0) {
+            console.error(`ERROR: Missing required environment variables: ${missingVars.join(', ')}`);
+            console.error('Please check your .env file and restart the server.');
+            return false;
+        }
+        
+        // Try to connect to the database
+        console.log('Connecting to database...');
+        console.log(`Host: ${process.env.DB_HOST}, Database: ${process.env.DB_DATABASE}, User: ${process.env.DB_USER}`);
+        
+        const connection = await pool.getConnection();
+        console.log('✅ Successfully connected to database');
+        
+        // Create users table if not exists
         await connection.execute(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,23 +68,36 @@ const verifyToken = async (req, res, next) => {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('Table users is ready');
+        console.log('✅ Table users is ready');
         connection.release();
+        return true;
     } catch (err) {
-        console.error('Database initialization error:', err);
+        console.error('❌ Database initialization error:', err.message);
+        
+        // More detailed error reporting
+        if (err.code === 'ECONNREFUSED') {
+            console.error('Could not connect to MySQL server. Is it running? Check your host and port settings.');
+        } else if (err.code === 'ER_ACCESS_DENIED_ERROR') {
+            console.error('Access denied. Check your username and password.');
+        } else if (err.code === 'ER_BAD_DB_ERROR') {
+            console.error(`Database '${process.env.DB_DATABASE}' does not exist. Create it first.`);
+        }
+        
         console.error('Connection details:', {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             database: process.env.DB_DATABASE,
-            port: process.env.DB_PORT
+            port: process.env.DB_PORT || 3306
         });
+        return false;
     }
-})();
+};
 
 // Registration endpoint
 router.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log('[AUTH] Register attempt:', username);
 
         // Validate input
         if (!username || !password) {
@@ -98,6 +130,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log('[AUTH] Login attempt:', username);
 
         // Validate input
         if (!username || !password) {
@@ -158,4 +191,10 @@ router.get('/me', verifyToken, async (req, res) => {
     }
 });
 
-module.exports = { router, verifyToken };  // Export both router and middleware
+// Catch-all error handler for auth
+router.use((err, req, res, next) => {
+    console.error('[AUTH] Unhandled error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+});
+
+module.exports = { router, verifyToken, initDatabase };

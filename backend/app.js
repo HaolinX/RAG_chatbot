@@ -38,8 +38,16 @@ const PORT = process.env.PORT || 8277;
 
 const cors = require('cors');
 app.use(cors({
-    origin: ['http://localhost:8277'],
-    credentials: true
+    // Allow requests from both localhost and your domain
+    origin: [
+        'http://localhost:8277', 
+        'https://cs317.cs.ubc.ca:8277',
+        'https://cs317.cs.ubc.ca', // Include base domain without port
+        // Add any other domains your frontend might be hosted on
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // --- Middleware ---
@@ -48,7 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Import auth routes and middleware
-const { router: authRouter, verifyToken } = require('./routes/auth');
+const { router: authRouter, verifyToken, initDatabase } = require('./routes/auth');
 app.use('/api/auth', authRouter);
 
 // --- File Upload Setup ---
@@ -394,6 +402,25 @@ app.get('/api/check-auth', verifyToken, (req, res) => {
 });
 
 // --- Start Server ---
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  try {
+    // Initialize database
+    const dbInitSuccess = await initDatabase();
+    
+    if (!dbInitSuccess) {
+      console.error('⚠️ Failed to initialize database. Server will not start.');
+      process.exit(1);
+    }
+    
+    // If database initialization was successful, start the server
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Fatal error starting server:', error);
+    process.exit(1);
+  }
+};
+
+// Call the async function
+startServer();
