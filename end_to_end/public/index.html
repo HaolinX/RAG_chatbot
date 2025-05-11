@@ -1,15 +1,132 @@
+<!-- source: https://www.w3schools.com/howto/howto_css_modals.asp -->
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-<meta charset="UTF-8">
-<title>Redirecting...</title>
-<script>
-if (localStorage.getItem('token')) {
-window.location.href = 'dashboard.html';
-} else {
-window.location.href = 'login.html';
-}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGBot</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+
+    <!-- AOS CSS for animation -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+    <!-- Jayden's AuthModal -->
+    <link rel="stylesheet" href="css/auth-modal.css">
+
+    <!-- style sheet for home page -->
+    <link rel="stylesheet" href="css/index.css">
+
 </head>
-<body></body>
+
+<body>
+    <!-- Header with illustration -->
+    <div class="container">
+
+        <header>
+            <!-- Logo in top left -->
+            <div class="logo">
+                <li><a href="index.html" style="color: #cccccc; text-decoration: none">RAGBot</a></li>
+            </div>
+
+            <!-- Login/Registration Section -->
+            <button id="loginBtn">Login / Register</button>
+
+            <!-- navigation bar -->
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="/faq.html">FAQ's</a>
+            </nav>
+        </header>
+
+        <img src="images/chatbot_placeholder.png" alt="Chatbot Illustration" class="web-cover" />
+
+
+        <div id="authModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+
+                <!-- Tab buttons -->
+                <div class="tabs">
+                    <button class="tab active" data-target="loginForm">Login</button>
+                    <button class="tab" data-target="registerForm">Register</button>
+                </div>
+
+                <!-- Login form -->
+                <form id="loginForm" class="form active">
+                    <div class="error-message" id="loginError"></div>
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+
+                <!-- Register form -->
+                <form id="registerForm" class="form">
+                    <div class="error-message" id="registerError"></div>
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password1" placeholder="Password" required>
+                    <input type="password" id="password2" placeholder="Confirm Password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="spacer" data-aos="fade-right"></div>
+
+        <section class="ChatBot" data-aos="fade-up">
+            <li><a href="chat-bot.html" id="prototypeBtn" class="button-chat">RAGBot</a></li>
+        </section>
+
+        <div class="spacer" data-aos="fade-right"></div>
+
+        <!-- About Section -->
+        <section class="about" data-aos="fade-up">
+            <h2>About Us</h2>
+            <p>Welcome to <strong>RAGBot</strong>, your intelligent document assistant powered by advanced AI
+                technology. Our platform combines
+                the power of Retrieval-Augmented Generation (RAG) with an intuitive chat interface to help you extract
+                insights
+                from your documents effortlessly. Whether you're analyzing research papers, technical documentation, or
+                business
+                reports, RAGBot provides accurate, context-aware responses based on your uploaded documents.</p>
+            <p>Our mission is to make document interaction more efficient and intuitive. By leveraging state-of-the-art
+                natural language processing, we ensure that you can quickly find the information you need without having
+                to
+                manually search through lengthy documents.</p>
+        </section>
+
+        <div class="spacer" data-aos="fade-right"></div>
+
+        <!-- FAQ Section -->
+        <section class="faq" data-aos="fade-up">
+            <h2>Frequently Asked Questions</h2>
+            <li><a href="faq.html" class="button-link">Frequently Asked Questions</a></li>
+        </section>
+
+        <div class="spacer" data-aos="fade-right"></div>
+
+        <footer>
+            <div class="footer">
+                <p>&copy; 2025 RAGBot. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            once: false // Animation happens only once as you scroll
+        });
+    </script>
+
+    <!-- links to the javascript file -->
+    <script src="js/auth-modal.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
 </html>
