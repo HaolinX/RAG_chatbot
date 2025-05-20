@@ -31,10 +31,6 @@ header {
 }
 
 /* navigation */
-nav {
-    display: inline-block; /* centers nav within header */
-}
-
 nav a {
     color: white;
     text-decoration: none;

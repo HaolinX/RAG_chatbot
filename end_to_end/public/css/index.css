@@ -36,8 +36,8 @@ header {
 } 
 
 .web-cover {
-    width: 50%;
-    height: 25%;
+    width: 100%;
+    height: 50vh;
     display: block;
     margin: 0 auto;
 }
@@ -126,7 +126,7 @@ p {
 
 footer {
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     background-color: #1d2331;
     color: #ffffff;
 }
