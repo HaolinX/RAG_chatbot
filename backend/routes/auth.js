@@ -72,7 +72,7 @@ const initDatabase = async () => {
         connection.release();
         return true;
     } catch (err) {
-        console.error('❌ Database initialization error:', err.message);
+        console.error('Database initialization error:', err.message);
         
         // More detailed error reporting
         if (err.code === 'ECONNREFUSED') {
