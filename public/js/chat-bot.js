@@ -11,7 +11,7 @@ const questionInput = document.getElementById('questionInput');
 const askButton = document.getElementById('askButton');
 
 // API endpoint base URL
-const API_URL = 'http://localhost:8277';
+const API_URL = 'http://localhost:8232';
 
 // Global variables
 let currentFileName = null;

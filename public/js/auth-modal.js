@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8277';
+const API_URL = 'http://localhost:8232';
 const loginBtn = document.getElementById('loginBtn');
 const prototypeBtn = document.getElementById('prototypeBtn');
 const modal = document.getElementById('authModal');
@@ -98,14 +98,20 @@ loginForm.addEventListener('submit', async (e) => {
         });
 
         const data = await response.json();
+        console.log("Login response:", data); // optional debug
 
-        if (response.ok) {
+        if (data.token) {
+            // Login success
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.user.username);
             window.location.href = 'chat-bot.html';
         } else {
-            showError(loginError, data.error || 'Login failed');
-            if (data.error === 'User not found') {
+            // Login failed
+            const errorMessage = data.error || data.message || 'Login failed';
+            showError(loginError, errorMessage);
+
+            // Switch to register tab if user not found
+            if (errorMessage.toLowerCase().includes('user not found')) {
                 setTimeout(() => {
                     showRegisterTab();
                 }, 1500);
@@ -115,15 +121,17 @@ loginForm.addEventListener('submit', async (e) => {
         console.error('Login error:', error);
         showError(loginError, 'Connection error. Please try again.');
     }
+
 });
 
+// Register Form
 registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearErrors();
 
-    const username = registerForm.querySelector('input[name="username"]').value;
-    const password = registerForm.querySelector('input[name="password"]').value;
-    const confirmPassword = registerForm.querySelector('input[name="confirmPassword"]').value;
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('password1').value;
+    const confirmPassword = document.getElementById('password2').value;
 
     if (password !== confirmPassword) {
         showError(registerError, 'Passwords do not match');
@@ -139,9 +147,7 @@ registerForm.addEventListener('submit', async (e) => {
             body: JSON.stringify({ username, password }),
         });
 
-        console.log('Response:', response);
         const data = await response.json();
-        console.log('Data:', data);
 
         if (response.ok) {
             registerForm.reset();
@@ -157,6 +163,7 @@ registerForm.addEventListener('submit', async (e) => {
     }
 });
 
+
 // Check authentication status on page load
 document.addEventListener('DOMContentLoaded', () => {
     if (checkAuthentication() && window.location.pathname.endsWith('index.html')) {
@@ -164,3 +171,14 @@ document.addEventListener('DOMContentLoaded', () => {
         loginBtn.style.backgroundColor = '#4CAF50';
     }
 });
+
+
+// Logout button handler
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        window.location.href = 'index.html';
+    });
+}

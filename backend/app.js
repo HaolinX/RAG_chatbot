@@ -34,25 +34,22 @@ Please provide a clear and helpful response:`;
 
 // --- App Setup ---
 const app = express();
-const PORT = process.env.PORT || 8277;
+const PORT = process.env.PORT;
 
 const cors = require('cors');
+
 app.use(cors({
-    // Allow requests from both localhost and your domain
-    origin: [
-        'http://localhost:8277', 
-        'https://cs317.cs.ubc.ca:8277',
-        'https://cs317.cs.ubc.ca', // Include base domain without port
-        // Add any other domains your frontend might be hosted on
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'http://localhost:8232',
+  credentials: true,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 // --- Middleware ---
 app.use(express.json({ limit: '50mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Import auth routes and middleware

@@ -58,20 +58,23 @@
                 <!-- Login form -->
                 <form id="loginForm" class="form active">
                     <div class="error-message" id="loginError"></div>
-                    <input type="text" id="username" placeholder="Username" required>
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="text" id="username" name="username" placeholder="Username" required />
+                    <input type="password" id="password" name="password" placeholder="Password" required />
                     <button type="submit">Login</button>
-                    <button onclick="logout()">Logout</button>
+                    <button type="button" id="logoutBtn">Logout</button>
                 </form>
+
 
                 <!-- Register form -->
                 <form id="registerForm" class="form">
                     <div class="error-message" id="registerError"></div>
-                    <input type="text" id="username" placeholder="Username" required>
-                    <input type="password" id="password1" placeholder="Password" required>
-                    <input type="password" id="password2" placeholder="Confirm Password" required>
+                    <input type="text" id="registerUsername" name="username" placeholder="Username" required>
+                    <input type="password" id="password1" name="password1" placeholder="Password" required>
+                    <input type="password" id="password2" name="confirmPassword" placeholder="Confirm Password"
+                        required>
                     <button type="submit">Register</button>
                 </form>
+
             </div>
         </div>
 
@@ -106,7 +109,7 @@
             <h2>Frequently Asked Questions</h2>
             <li><a href="faq.html" class="button-link">Frequently Asked Questions</a></li>
         </section>
-        
+
         <footer>
             <div class="footer">
                 <p>&copy; 2025 RAGBot. All rights reserved.</p>
@@ -125,7 +128,6 @@
 
     <!-- links to the javascript file -->
     <script src="js/auth-modal.js"></script>
-    <script src="js/script.js"></script>
 </body>
 
 </html>
