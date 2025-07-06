@@ -20,7 +20,7 @@ function checkAuthentication() {
 prototypeBtn.addEventListener('click', (e) => {
     e.preventDefault();
     if (checkAuthentication()) {
-        window.location.href = 'chat-bot.html';
+        window.location.href = 'chatbot.html';
     } else {
         modal.classList.remove('hidden');
         showLoginTab();
@@ -104,7 +104,7 @@ loginForm.addEventListener('submit', async (e) => {
             // Login success
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.user.username);
-            window.location.href = 'chat-bot.html';
+            window.location.href = 'chatbot.html';
         } else {
             // Login failed
             const errorMessage = data.error || data.message || 'Login failed';

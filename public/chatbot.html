@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAGBot - Chat Interface</title>
-    <link rel="stylesheet" href="css/chat_styles.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 
 <body>
@@ -23,9 +23,13 @@
         <div class="input-container">
             <div class="input-box">
                 <textarea id="questionInput" placeholder="Ask a question..." rows="2"></textarea>
-                <button id="askButton" class="primary-button">Send</button>
+                <div class="button-group">
+                    <button id="uploadButton" class="upload-button">Upload PDF</button>
+                    <button id="askButton" class="primary-button">Send</button>
+                </div>
             </div>
         </div>
+
     </div>
 
     <!-- Upload Modal -->
@@ -63,13 +67,7 @@
         </div>
     </div>
 
-    <div class="upload-button-container">
-        <button id="uploadButton" class="primary-button">
-            Upload PDF
-        </button>
-    </div>
-
-    <script src="js/chat-bot.js"></script>
+    <script src="js/chatbot.js"></script>
 </body>
 
 </html>
