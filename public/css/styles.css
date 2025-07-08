@@ -5,6 +5,12 @@
     src: url('fonts/PPTelegraf-Regular.otf') format('opentype');
 }
 
+/* reserved space for scrollbar to avoid layout shift between pages */
+html {
+    overflow-y: scroll;
+}
+
+
 body {
     font-family: 'Telegraf', sans-serif;
     background-color: #0f172a; /* slate-900 */
