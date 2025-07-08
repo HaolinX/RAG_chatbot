@@ -1,30 +1,99 @@
-# CSC317-Group-Project-Website
+# RAG_chatbot
 
-This is a GROUP assignment.  Get the starting repository here.
+RAG_chatbot is an interactive web application that allows users to upload PDF documents and chat with an AI assistant. Using Retrieval-Augmented Generation (RAG), the chatbot answers questions based on the uploaded content, providing intelligent, document-aware assistance.
 
-Your goal is to "code" your website design in HTML and CSS for style and layout but no javascript yet, or at least very minimal javascript. 
+---
 
-I do expect to see full navigation working, the home page, all product/resource pages, and other intermediate pages.  
+## ✨ Features
 
-Some things I expect in addition to the site:
+- 🧠 Chat with a custom AI powered by OpenAI + vector embeddings
+- 📄 Upload PDF files and generate summaries automatically
+- 🔍 Ask questions directly based on document content
+- 🔒 Login/Register system with secure JWT authentication
+- 🛠️ Built with plain HTML/CSS/JS and Node.js
+- 🐬 MySQL for user management and authentication
 
-**File Organization**:
-- Files should be in directories within the **public/** directory.  
-- Images should be within their own structure (such as public/images/).
-- Product pages should be in their own directory (such as public/products/).
+---
 
-**Meaningful Names**:
-- Files, and thus the URL, should have meaningful names to the user.
+## ⚙️ Installation & Setup
 
-**Submission**:
-- Should be in the assignments GitHub (all files/folders within your **public** directory).
-- And a writeup in PDF submitted to Canvas. The PDF should include your team name, all the members of the teams names, the github userid for the submitted assignment and a description of what you did, problems encountered and how you solved then, along with screenshots of the site (only one person in the group needs to submit the write-up).
+### 1. Clone the repository
 
-When you are ready to submit your assignment, tag that version in your repository with the following command:
-
-```
-git tag -a HTMLCSS -m "TAG HTML/CSS Version"
-git push origin --tags
+```bash
+git clone https://github.com/HaolinX/RAG_chatbot.git
+cd RAG_chatbot
 ```
 
-Do this for each successive milestone, as well.
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure your `.env` file
+
+Create a `.env` file in the root directory with the following content:
+
+```
+PORT=8232
+
+# MySQL Database Configuration
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_db_password
+DB_DATABASE=RAG_chatbot
+DB_PORT=3306
+
+# JWT Secret
+JWT_SECRET=your_jwt_secret
+
+# OpenAI API Key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+### 4. Create MySQL Database
+
+Log into your MySQL terminal:
+
+```sql
+CREATE DATABASE RAG_chatbot;
+USE RAG_chatbot;
+```
+
+The necessary `users` table will be automatically created when the app starts.
+
+### 5. Start the server
+
+```bash
+node backend/app.js
+```
+
+Visit `http://localhost:8232` to use the app.
+
+---
+
+## 🧪 Developer Notes
+
+- The app runs **locally only**, using Node.js for the backend server.
+- `.env` variables are injected using `dotenv`, including DB, JWT, and OpenAI credentials.
+- The chatbot uses **Xenova/all-MiniLM-L6-v2** for embeddings (via Transformers.js) and **facebook/bart-large-cnn** for summarization.
+- File uploads are stored in the `/uploads` directory. Vector stores are saved in `/vectorstore`.
+
+---
+
+## 👥 Team Credits
+
+Project built by:
+
+- **Daniel** (Frontend)
+- **Kunj** (Backend)
+- **Jayden(Haolin)** (Frontend)
+- **Julian** (Backend)
+
+> Note: After the semester ended, I(Haolin) took initiative to refactor and enhance both the frontend and backend code over the summer.
+
+---
+
+## 📌 License
+
+This project was developed as part of a CSC Web Development course. For personal and educational use only.
